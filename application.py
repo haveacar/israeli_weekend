@@ -20,4 +20,3 @@ def contact():
 if __name__ == '__main__':
     application.run(port=5002, debug=True)
 
-#  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"/>
