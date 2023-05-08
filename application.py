@@ -1,12 +1,23 @@
-from flask import Flask
+from flask import Flask, render_template
 
 application = Flask(__name__)
 
 
 @application.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
+@application.route('/home')
+def home():
+    return render_template('index.html')
 
+
+@application.route('/about')
+def about():
+    return render_template('about.html')
+
+@application.route('/contact')
+def contact():
+    return render_template('/contact.html')
 
 if __name__ == '__main__':
     application.run(port=5002, debug=True)
+
+#  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"/>
