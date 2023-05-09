@@ -17,12 +17,12 @@ def get_data_travel(number_weeks=3) -> tuple:
         future_date += datetime.timedelta(days=1)
 
     # create departure string
-    one_day = datetime.timedelta(days=1)
-    data_departure = f"{future_date}_{future_date + one_day}"
+    data_departure = f"{future_date}_{future_date + datetime.timedelta(days=1)}"
 
     # create return string
     sunday_return = future_date + datetime.timedelta(days=3)
-    two_days = datetime.timedelta(days=2)
-    data_return = f"{sunday_return}_{sunday_return + two_days}"
+    data_return = f"{sunday_return}_{sunday_return + datetime.timedelta(days=3)}"
 
     return data_departure, data_return
+
+

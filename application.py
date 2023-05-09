@@ -12,9 +12,9 @@ departure_date, return_date= get_data_travel()
 def home():
     return render_template('index.html', data_departure=departure_date, data_return=return_date)
 
-@application.route('/about')
-def about():
-    return render_template('about.html')
+@application.route('/search')
+def search():
+    return render_template('search.html')
 
 @application.route('/contact')
 def contact():

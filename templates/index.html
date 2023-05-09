@@ -45,27 +45,28 @@
                 </div>
             </div>
         </header>
-        <!-- Kiwy-->
+        <!-- Kiwi-->
         <div>
             <h2>Book cheap flights</h2>
             <h4>Price for Round-Trip(2 ways) for One person</h4>
+            <div id="widget-holder"></div>
+                <script
+                data-currency="ILS"
+                data-lang="en"
+                data-affilid="haveacaronlywidgets"
+                data-from="tel-aviv_il"
+                data-departure={{ data_departure }}
+                data-return={{ data_return }}
+                data-cabin="ECONOMY"
+                data-transport-types="FLIGHT"
+                data-stop-number="0"
+                data-limit="25"
+                data-tile-limit="20"
+                data-sort-by="price"
+                data-results-only="true"
+                src="https://widgets.kiwi.com/scripts/widget-search-iframe.js">
+                </script>
         </div>
-        <div id="widget-holder"></div>
-        <script
-            data-currency="ILS"
-            data-lang="en"
-            data-affilid="haveacartestwidjet"
-            data-from="tel-aviv_il"
-            data-departure={{ data_departure }}
-            data-return={{ data_return }}
-            data-cabin="ECONOMY"
-            data-transport-types="FLIGHT"
-            data-stop-number="0"
-            data-tile-limit="18"
-            data-sort-by="price"
-            data-results-only="true"
-            src="https://widgets.kiwi.com/scripts/widget-search-iframe.js">
-        </script>
 
         <!-- Footer-->
         <footer class="py-5 bg-dark">
