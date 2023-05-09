@@ -1,6 +1,6 @@
 import datetime
 
-def get_data_travel(number_weeks=2) -> tuple:
+def get_data_travel(number_weeks=3) -> tuple:
     """
     func to generate departing date and return with Israel preferences
     :return: tuple of strings
