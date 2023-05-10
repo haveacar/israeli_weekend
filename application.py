@@ -6,25 +6,30 @@ application = Flask(__name__)
 
 
 departure_date, return_date= get_data_travel()
-
 conversion_rates = Currency()
 
 # get current data rates
 data = conversion_rates.currency_convector().get("date")
 # list comprehension of keys rates
+
 currencies = [key for key in conversion_rates.currency_convector().get("rates")]
+print(len(currencies))
+
 
 @application.route('/', methods=['GET', 'POST'])
 @application.route('/home', methods=['GET', 'POST'])
 def home():
+    """index page"""
     return render_template('index.html', data_departure=departure_date, data_return=return_date)
 
 @application.route('/search')
 def search():
+    """air tickets search page"""
     return render_template('search.html')
 
 @application.route('/currency', methods=['GET', 'POST'])
 def currency():
+    """currency convector page"""
     if request.method == 'POST':
 
         amount = float(request.form['amount'])
