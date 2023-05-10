@@ -6,7 +6,8 @@
 {% block body %}
     <!-- Kiwi-->
         <div>
-            <h2>Tickets search</h2>
+            <h2>Book cheap flights</h2>
+            <h4>Price for Round-Trip(2 ways) for One person</h4>
             <div id="widget-holder"></div>
                 <script
                 data-currency="ILS"
@@ -24,5 +25,9 @@
                 data-results-only="true"
                 src="https://widgets.kiwi.com/scripts/widget-search-iframe.js">
                 </script>
+        </div>
+        <div style="padding: 7px 0;">
+            <h1>OR</h1>
+            <a href="/search"><button style="background-color:#0de50d;padding:20px 35px;color:white;border:none;border-radius:5px;">Search Flight</button></a>
         </div>
 {% endblock %}
