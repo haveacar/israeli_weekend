@@ -16,6 +16,22 @@ def home():
 def search():
     return render_template('search.html')
 
+@application.route('/currency')
+def currency():
+    if request.method == 'POST':
+
+        amount = float(request.form['amount'])
+        from_currency = request.form['from_currency']
+        to_currency = request.form['to_currency']
+        # get conversion rate
+        conversion_rate = conversion_rates.currency_convector().get("rates")[to_currency] / \
+                          conversion_rates.currency_convector().get("rates")[from_currency]
+        converted_amount = round(amount * conversion_rate, 2)
+        # return template rates
+        return render_template('index.html', data=data, amount=amount, from_currency=from_currency + " =",
+                               converted_amount=converted_amount, to_currency=to_currency, currencies=currencies)
+    else:
+        return render_template('index.html', data=data, currencies=currencies)
 
 
 if __name__ == '__main__':
