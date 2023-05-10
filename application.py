@@ -13,7 +13,7 @@ data = conversion_rates.currency_convector().get("date")
 # list comprehension of keys rates
 
 currencies = [key for key in conversion_rates.currency_convector().get("rates")]
-print(len(currencies))
+
 
 
 @application.route('/', methods=['GET', 'POST'])
