@@ -16,9 +16,7 @@ def home():
 def search():
     return render_template('search.html')
 
-@application.route('/contact')
-def contact():
-    return render_template('/contact.html')
+
 
 if __name__ == '__main__':
     application.run(port=5002, debug=True)
