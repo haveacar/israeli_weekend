@@ -2642,6 +2642,18 @@ textarea.form-control-lg {
     outline: 0;
 }
 
+.button-div {
+  padding: 7px 0;
+}
+
+.search-button {
+  background-color: #0de50d;
+  padding: 20px 35px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
 .form-range:focus::-webkit-slider-thumb {
     box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
