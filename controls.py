@@ -2,10 +2,8 @@ import datetime
 import os
 import requests as requests
 from flask import json
+from keys_api import *
 
-# api key and request url
-API_KEY = "c66xOBOerxjgjCqRfbT3MzvIIqMoDm6e"
-REQUEST_URL = "https://api.apilayer.com/fixer/latest?base=USD"
 
 # path
 CURRENT_PATH = os.path.dirname(__file__)
@@ -225,7 +223,7 @@ CURRENCY_NAMES =(
     'SGD - Singapore Dollar',
     'SHP - Saint Helena Pound',
     'SLE - Sierra Leonean Leone',
-    'SLL - Sierra Leonean Leone (no longer in circulation)',
+    'SLL - Sierra Leonean Leone',
     'SOS - Somali Shilling',
     'SRD - Surinamese Dollar',
     'STD - São Tomé and Príncipe Dobra',
@@ -246,7 +244,7 @@ CURRENCY_NAMES =(
     'USD - United States Dollar',
     'UYU - Uruguayan Peso',
     'UZS - Uzbekistani Som',
-    'VEF - Venezuelan Bolívar (no longer in circulation)',
+    'VEF - Venezuelan Bolívar',
     'VES - Venezuelan Bolívar Soberano',
     'VND - Vietnamese Đồng',
     'VUV - Vanuatu Vatu',
@@ -260,7 +258,7 @@ CURRENCY_NAMES =(
     'XPF - CFP Franc',
     'YER - Yemeni Rial',
     'ZAR - South African Rand',
-    'ZMK - Zambian Kwacha (no longer in circulation)',
+    'ZMK - Zambian Kwacha',
     'ZMW - Zambian Kwacha',
     'ZWL - Zimbabwean Dollar',
     )
