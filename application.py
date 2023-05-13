@@ -49,6 +49,10 @@ def currency():
     else:
         return render_template('currency.html', data=data, currencies=CURRENCY_NAMES)
 
+@application.route('/booking')
+def booking():
+    """booking.com search"""
+    return render_template('booking.html')
 
 if __name__ == '__main__':
     application.run(port=5002, debug=True)
