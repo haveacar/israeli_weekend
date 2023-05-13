@@ -687,6 +687,7 @@ progress {
     }
 }
 
+
 .row {
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 0;
@@ -7564,7 +7565,12 @@ textarea.form-control-lg {
     left: 0;
     z-index: 1030;
 }
+.booking-div{
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 5px;
 
+}
 .fixed-bottom {
     position: fixed;
     right: 0;
