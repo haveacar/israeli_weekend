@@ -4,9 +4,13 @@ from controls import *
 
 application = Flask(__name__)
 
-
+# get departure_date return_date
 departure_date, return_date= get_data_travel()
 conversion_rates = Currency()
+date_obj = datetime.datetime.strptime(departure_date.split('_')[0], '%Y-%m-%d')
+
+# extract the month name
+month_name = date_obj.strftime('%B')
 
 # get current data rates
 data = conversion_rates.currency_convector().get("date")
@@ -20,7 +24,7 @@ currencies = [key for key in conversion_rates.currency_convector().get("rates")]
 @application.route('/home', methods=['GET', 'POST'])
 def home():
     """index page"""
-    return render_template('index.html', data_departure=departure_date, data_return=return_date)
+    return render_template('index.html', data_departure=departure_date, data_return=return_date, cheap_month=month_name )
 
 @application.route('/search')
 def search():
