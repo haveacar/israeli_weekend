@@ -6,16 +6,17 @@
 {% block body %}
     <!-- Kiwi-->
         <div>
-            <h2>Book cheap flights</h2>
-            <h4>Price for Round-Trip(2 ways) for One person</h4>
+            <h2>Book cheap flights from Tel Aviv</h2>
+            <h3> In {{ cheap_month }}</h3>
+            <h6>Price for Round-Trip(2 ways) for One person</h6>
             <div id="widget-holder"></div>
                 <script
                 data-currency="ILS"
                 data-lang="en"
                 data-affilid="haveacaronlywidgets"
                 data-from="tel-aviv_il"
-                data-departure={{ data_departure }}
-                data-return={{ data_return }}
+                data-departure="{{ data_departure }}"
+                data-return="{{ data_return }}"
                 data-cabin="ECONOMY"
                 data-transport-types="FLIGHT"
                 data-stop-number="0"
@@ -30,4 +31,25 @@
             <h1>OR</h1>
             <a href="/search"><button class="search-button">Search Flight</button></a>
         </div>
+
+        <div class="booking-div">
+                <hr>
+                <h2>Online Hotel Booking</h2>
+                <script src="https://www.booking.com/affiliate/prelanding_sdk"></script>
+
+                <div id="bookingAffiliateWidget_08512b5a-a393-439f-be16-7fb60bb3b65c">&nbsp;</div>
+
+              <script>
+                  (function () {
+                      var BookingAffiliateWidget = new Booking.AffiliateWidget({
+              "iframeSettings": {
+                "selector": "bookingAffiliateWidget_08512b5a-a393-439f-be16-7fb60bb3b65c",
+                "responsive": true
+              },
+              "widgetSettings": {}
+            });
+                  })();
+              </script>
+        </div>
+
 {% endblock %}
