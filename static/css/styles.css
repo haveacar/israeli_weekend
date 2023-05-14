@@ -328,6 +328,10 @@ th {
     text-align: -webkit-match-parent;
 }
 
+ul.list-inline li a {
+  color: white;
+}
+
 thead,
 tbody,
 tfoot,
