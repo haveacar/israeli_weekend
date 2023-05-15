@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from controls import *
+from constants import *
 
 
 application = Flask(__name__)
