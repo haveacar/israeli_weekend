@@ -4,10 +4,10 @@ import requests as requests
 from flask import json
 from keys_api import *
 
-
 # path
 CURRENT_PATH = os.path.dirname(__file__)
 CURRENT_PATCH_JASON = os.path.join(CURRENT_PATH, "static")
+
 
 def get_data_travel(number_weeks=3) -> tuple:
     """
@@ -33,6 +33,7 @@ def get_data_travel(number_weeks=3) -> tuple:
     data_return = f"{sunday_return}_{sunday_return + datetime.timedelta(days=3)}"
 
     return data_departure, data_return
+
 
 class Currency:
     '''Currency convertor'''
@@ -90,8 +91,7 @@ class Currency:
         return all_rates
 
 
-
-CURRENCY_NAMES =(
+CURRENCY_NAMES = (
     'AED - United Arab Emirates Dirham',
     'AFN - Afghan Afghani',
     'ALL - Albanian Lek',
@@ -261,4 +261,66 @@ CURRENCY_NAMES =(
     'ZMK - Zambian Kwacha',
     'ZMW - Zambian Kwacha',
     'ZWL - Zimbabwean Dollar',
-    )
+)
+
+
+class Carbon:
+
+    # This class is responsible for talking to the Flight Search API.
+    def _get_iata_code(self, city: str)->str|None:
+        """
+        Func request to kivi for get Iata code
+        :param city: city str
+        :return: str|None
+        """
+
+        params = {
+            "term": city.lower()
+        }
+        try:
+            response = requests.get(url=KIWI_ENDPOINT, headers=HEADER, params=params)
+        except:
+            print("Data collect error")
+            return None
+
+        else:
+            response.raise_for_status()
+
+            return response.json()['locations'][0]['code']
+
+    def carbon_request(self, departure_city:str, destination_city:str, passenger:int):
+        """
+        Func request to carbon for calculate co2
+        :param departure_city: str
+        :param destination_city: str
+        :param passenger: int
+        :return: dict
+        """
+
+        self.departure = self._get_iata_code(departure_city)
+        self.destination = self._get_iata_code(destination_city)
+        self.passenger = passenger
+
+        headers = {
+            "Authorization": f"Bearer {API_KEY_CARBON}",
+            "Content-Type": "application/json"
+        }
+
+        data = {
+            "type": "flight",
+            "passengers": self.passenger,
+            "legs": [
+                {"departure_airport": f"{self.departure}", "destination_airport": f"{self.destination}"},
+                {"departure_airport": f"{self.departure}", "destination_airport": f"{self.destination}"}
+            ]
+        }
+        try:
+            response = requests.post(CARBON_URL, headers=headers, data=json.dumps(data))
+        except:
+            print("Get carbon Api error")
+            return None
+
+        else:
+            return response.content
+
+
