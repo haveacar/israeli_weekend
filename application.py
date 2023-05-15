@@ -54,6 +54,11 @@ def booking():
     """booking.com search"""
     return render_template('booking.html')
 
+@application.route('/carbon')
+def carbon():
+    """carbon calculate"""
+    return render_template('carbon.html')
+
 if __name__ == '__main__':
     application.run(port=5002, debug=True)
 
