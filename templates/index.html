@@ -4,6 +4,16 @@
 {% endblock %}
 
 {% block body %}
+    <!-- Image block -->
+        <div>
+            <div class="image-container">
+              <img src="{{ url_for('static', filename='img/greenfly.jpg') }}" alt="Image 1" width="300" height="300">
+              <img src="https://dummyimage.com/300x300/000/fff" alt="Image 2" width="300" height="300">
+              <a href="/carbon">
+                <img src="{{ url_for('static', filename='img/greenfly.jpg') }}" alt="Carbon" width="400" height="276">
+              </a>
+            </div>
+        </div>
     <!-- Kiwi-->
         <div>
             <h2>Book cheap flights from Tel Aviv</h2>

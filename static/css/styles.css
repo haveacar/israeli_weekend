@@ -621,6 +621,16 @@ progress {
     max-width: 100%;
     height: auto;
 }
+.image-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.image-container a {
+  margin: 30px auto;
+}
 
 .img-thumbnail {
     padding: 0.25rem;
