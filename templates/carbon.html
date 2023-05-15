@@ -1,14 +1,39 @@
 {% extends 'base.html'%}
 {% block title %}
-    Search
+    Currency convector
 {% endblock %}
 
-{% block body %}
-    <div>
-        <div class="image-container">
-          <img src="image1.jpg" alt="Image 1" width="300" height="300">
-          <img src="image2.jpg" alt="Image 2" width="300" height="300">
-          <img src="image3.jpg" alt="Image 3" width="300" height="300">
-        </div>
+    {% block body %}
+    <div style="text-align:center;">
+        <p style="margin-top: 5px;">Rates from date: {{ data }}</p>
     </div>
+    <div style="max-width:80%; display:block; margin: auto;">
+        <img class="img-fluid" src="{{ url_for('static', filename='img/forest.jpg') }}" alt="..."/>
+    </div>
+
+    <div class="button-div">
+        <form>
+          <label for="input1">From:</label>
+          <input type="text" id="input1" name="input1" placeholder="Tel Aviv"><br><br>
+          <div style="max-width:15%; display:block; margin: auto;">
+            <img class="img-fluid" src="{{ url_for('static', filename='img/green_feet.jpeg') }}" alt="..."/>
+            </div>
+            <br>
+          <label for="input2">To:</label>
+          <input type="text" id="input2" name="input2" placeholder="Barcelona"><br><br>
+
+          <input class="search-button" type="button" value="Calculate" >
+        </form>
+        <br>
+
+        {% if converted_amount is not none %}
+            <div style="text-align:center;">
+                <H2 style="margin-top: 5px;">
+                    Result: {{ amount }} {{ from_currency }} {{ converted_amount }} {{ to_currency }}</H2>
+            </div>
+
+    </div>
+    <br>
+    {% endif %}
+
 {% endblock %}
