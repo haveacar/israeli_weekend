@@ -1,9 +1,9 @@
 {% extends 'base.html'%}
 {% block title %}
-    Currency convector
+    Carbon Calculate
 {% endblock %}
 
-    {% block body %}
+{% block body %}
     <div style="text-align:center;">
         <p style="margin-top: 5px;">Rates from date: {{ data }}</p>
     </div>
@@ -12,28 +12,27 @@
     </div>
 
     <div class="button-div">
-        <form>
-          <label for="input1">From:</label>
-          <input type="text" id="input1" name="input1" placeholder="Tel Aviv"><br><br>
+        <form method="post">
+            <br>
+          <label for="input1">From City:</label>
+          <input type="text" id="input1" name="input1" placeholder="Tel Aviv">
+          <label for="input2">To City: </label>
+          <input type="text" id="input2" name="input2" placeholder="Barcelona">
+          <label for="input3"> Passengers:</label>
+          <input type="number" id="input3" name="input3"  required min="1"><br><br>
           <div style="max-width:15%; display:block; margin: auto;">
             <img class="img-fluid" src="{{ url_for('static', filename='img/green_feet.jpeg') }}" alt="..."/>
             </div>
-            <br>
-          <label for="input2">To:</label>
-          <input type="text" id="input2" name="input2" placeholder="Barcelona"><br><br>
 
-          <input class="search-button" type="button" value="Calculate" >
+          <input class="search-button" type="submit" value="Calculate" >
         </form>
-        <br>
-
-        {% if converted_amount is not none %}
+        {% if carbon_kg is not none %}
             <div style="text-align:center;">
                 <H2 style="margin-top: 5px;">
-                    Result: {{ amount }} {{ from_currency }} {{ converted_amount }} {{ to_currency }}</H2>
+                 {{ from_city }} {{ to_city }} {{ distance }} {{ carbon_kg }}</H2>
+
             </div>
 
+        {% endif %}
     </div>
-    <br>
-    {% endif %}
-
 {% endblock %}

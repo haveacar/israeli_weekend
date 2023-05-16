@@ -94,7 +94,7 @@ class Currency:
 class Carbon:
 
     # This class is responsible for talking to the Flight Search API.
-    def _get_iata_code(self, city: str) -> str | None:
+    def get_iata_code(self, city: str) -> str | None:
         """
         Func request to kivi for get Iata code
         :param city: city str
@@ -115,7 +115,7 @@ class Carbon:
 
             return response.json()['locations'][0]['code']
 
-    def carbon_request(self, departure_city: str, destination_city: str, passenger: int):
+    def carbon_request(self, departure_city: str, destination_city: str, passenger: int = 1):
         """
         Func request to carbon for calculate co2
         :param departure_city: str
@@ -124,8 +124,8 @@ class Carbon:
         :return: dict
         """
 
-        self.departure = self._get_iata_code(departure_city)
-        self.destination = self._get_iata_code(destination_city)
+        self.departure = self.get_iata_code(departure_city)
+        self.destination = self.get_iata_code(destination_city)
         self.passenger = passenger
 
         headers = {
@@ -138,7 +138,7 @@ class Carbon:
             "passengers": self.passenger,
             "legs": [
                 {"departure_airport": f"{self.departure}", "destination_airport": f"{self.destination}"},
-                {"departure_airport": f"{self.destination}", "destination_airport": f"{self.departure}"}
+
             ]
         }
         try:
@@ -148,5 +148,6 @@ class Carbon:
             return None
 
         else:
-            return response.content
+            res =response.json()
+            return res
 

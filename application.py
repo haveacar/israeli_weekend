@@ -68,7 +68,19 @@ def booking():
 def carbon():
     """emission calculate"""
     if request.method == 'POST':
-        print(fly_green.carbon_request('Frankfurt', 'Tel Aviv', 1))
+        # get from page
+        from_city = request.form['input1']
+        to_city= request.form['input2']
+        passengers_n = request.form['input3']
+
+        #if len(from_city) != 1 and len(to_city) !=1:
+
+        # get result from carbon api
+        result = fly_green.carbon_request(from_city, to_city, int(passengers_n))
+        distance = result['data']['attributes']['distance_value']
+        carbon_kg = result['data']['attributes']['carbon_kg']
+
+        return render_template('carbon.html', from_city=from_city, to_city=to_city, distance= f'{distance} km', carbon_kg=f'{carbon_kg} kg')
     else:
         return render_template('carbon.html')
 
