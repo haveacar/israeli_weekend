@@ -50,9 +50,15 @@ class Currency:
             """
             try:
                 # receive data
-                response_data = requests.get(REQUEST_URL, headers={"UserAgent": "XY", "apikey": API_KEY})
+                response_data = requests.get(REQUEST_URL, headers={"UserAgent": "XY", "apikey": API_KEY_CUR}, timeout=5)
+                print(response_data)
                 collected_rates = json.loads(response_data.text)
+
                 if collected_rates.get("success") == True: return collected_rates
+
+            except requests.exceptions.Timeout:
+                print("Connection timed out")
+                return False
 
             except:
                 return False
@@ -105,7 +111,11 @@ class Carbon:
             "term": city.lower()
         }
         try:
-            response = requests.get(url=KIWI_ENDPOINT, headers=HEADER, params=params)
+            response = requests.get(url=KIWI_ENDPOINT, headers=HEADER, params=params, timeout=5)
+
+        except requests.exceptions.Timeout:
+            print("Connection timed out")
+            return None
         except:
             print("Data collect error")
             return None
@@ -142,7 +152,11 @@ class Carbon:
             ]
         }
         try:
-            response = requests.post(CARBON_URL, headers=headers, data=json.dumps(data))
+            response = requests.post(CARBON_URL, headers=headers, data=json.dumps(data), timeout=5)
+
+        except requests.exceptions.Timeout:
+            print("Connection timed out")
+            return None
         except:
             print("Get carbon Api error")
             return None
@@ -150,4 +164,6 @@ class Carbon:
         else:
             res =response.json()
             return res
+
+
 

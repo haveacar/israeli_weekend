@@ -72,7 +72,7 @@ def carbon():
         from_city = request.form['input1']
         to_city = request.form['input2']
         passengers_n = request.form['input3']
-
+        round_trip = request.form['checkbox']
 
         try:
             # get result from carbon api
