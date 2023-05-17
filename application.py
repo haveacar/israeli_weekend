@@ -72,11 +72,14 @@ def carbon():
         from_city = request.form['input1']
         to_city = request.form['input2']
         passengers_n = request.form['input3']
-        round_trip = request.form['checkbox']
+        round_trip = request.form.get('checkbox')
 
+        # output roundtrip
+        trip = ""
+        if round_trip: trip ="(Round Trip)"
         try:
             # get result from carbon api
-            result = fly_green.carbon_request(from_city, to_city, int(passengers_n))
+            result = fly_green.carbon_request(from_city, to_city, round_trip,int(passengers_n))
             distance = result['data']['attributes']['distance_value']
             carbon_kg = result['data']['attributes']['carbon_kg']
         except:
@@ -84,7 +87,7 @@ def carbon():
 
 
         else:
-            return render_template('carbon.html', from_city=f' From :{from_city}', to_city=f'To: {to_city}',
+            return render_template('carbon.html', from_city=f' From : {from_city}', to_city=f'To: {to_city}{trip}',
 
                                    distance=f'Distance:{distance} km', carbon_kg=f'Calculated emissions: {carbon_kg} kg')
 

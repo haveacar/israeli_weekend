@@ -125,7 +125,7 @@ class Carbon:
 
             return response.json()['locations'][0]['code']
 
-    def carbon_request(self, departure_city: str, destination_city: str, passenger: int = 1):
+    def carbon_request(self, departure_city: str, destination_city: str, return_t= False, passenger: int = 1):
         """
         Func request to carbon for calculate co2
         :param departure_city: str
@@ -142,15 +142,25 @@ class Carbon:
             "Authorization": f"Bearer {API_KEY_CARBON}",
             "Content-Type": "application/json"
         }
+        if return_t:
+            data = {
+                "type": "flight",
+                "passengers": self.passenger,
+                "legs": [
+                    {"departure_airport": f"{self.departure}", "destination_airport": f"{self.destination}"},
+                    {"departure_airport": f"{self.destination}", "destination_airport": f"{self.departure}"}
+                ]
+            }
 
-        data = {
-            "type": "flight",
-            "passengers": self.passenger,
-            "legs": [
-                {"departure_airport": f"{self.departure}", "destination_airport": f"{self.destination}"},
+        else:
+            data = {
+                "type": "flight",
+                "passengers": self.passenger,
+                "legs": [
+                    {"departure_airport": f"{self.departure}", "destination_airport": f"{self.destination}"},
 
-            ]
-        }
+                ]
+            }
         try:
             response = requests.post(CARBON_URL, headers=headers, data=json.dumps(data), timeout=5)
 
