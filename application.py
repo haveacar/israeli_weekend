@@ -7,8 +7,6 @@ application = Flask(__name__)
 # get departure_date return_date
 departure_date, return_date = get_data_travel()
 
-
-
 date_obj = datetime.datetime.strptime(departure_date.split('_')[0], '%Y-%m-%d')
 
 # extract the month name
@@ -104,6 +102,10 @@ def about():
     """About page"""
     return render_template('about.html')
 
+@application.route('/airlines')
+def airlines():
+    """About page"""
+    return render_template('airlines.html')
 
 if __name__ == '__main__':
     application.run(port=5002, debug=True)
