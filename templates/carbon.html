@@ -4,11 +4,9 @@
 {% endblock %}
 
 {% block body %}
-
     <div style="max-width:80%; display:block; margin: auto;">
         <img class="img-fluid" src="{{ url_for('static', filename='img/forest.jpg') }}" alt="..."/>
     </div>
-
     <div class="button-div">
         <form method="post">
             <br>
@@ -22,7 +20,6 @@
           <div style="max-width:15%; display:block; margin: auto;">
             <img class="img-fluid" src="{{ url_for('static', filename='img/green_feet.jpeg') }}" alt="..."/>
             </div>
-
           <input class="search-button" type="submit" value="Calculate" >
         </form>
         {% if carbon_kg is not none %}
@@ -37,10 +34,7 @@
                  {{ distance }} </H2>
                 <H2 style="margin-left: 50px;">
                  {{ carbon_kg }} </H2>
-
-
             </div>
-
         {% endif %}
     </div>
 {% endblock %}
