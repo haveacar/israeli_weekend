@@ -18,8 +18,6 @@ month_name = date_obj.strftime('%B')
 conversion_rates = Currency()
 # get current data rates
 data = conversion_rates.currency_convector().get("date")
-
-
 # list comprehension of keys rates
 currencies = [key for key in conversion_rates.currency_convector().get("rates")]
 
@@ -92,9 +90,19 @@ def carbon():
             return render_template('carbon.html', from_city=f' From : {from_city}', to_city=f'To: {to_city}{trip}',
 
                                    distance=f'Distance:{distance} km', carbon_kg=f'Calculated emissions: {carbon_kg} kg')
-
     else:
         return render_template('carbon.html')
+
+
+@application.route('/contact')
+def contact():
+    """Contact Us page"""
+    return render_template('contact.html')
+
+@application.route('/about')
+def about():
+    """About page"""
+    return render_template('about.html')
 
 
 if __name__ == '__main__':
