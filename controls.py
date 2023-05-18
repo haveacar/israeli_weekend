@@ -172,8 +172,7 @@ class Carbon:
             return None
 
         else:
-            res =response.json()
+            res = response.json()
             return res
-
 
 

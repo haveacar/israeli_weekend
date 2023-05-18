@@ -7,16 +7,18 @@ application = Flask(__name__)
 # get departure_date return_date
 departure_date, return_date = get_data_travel()
 
-# currency convector
-conversion_rates = Currency()
+
 
 date_obj = datetime.datetime.strptime(departure_date.split('_')[0], '%Y-%m-%d')
 
 # extract the month name
 month_name = date_obj.strftime('%B')
 
+# currency convector
+conversion_rates = Currency()
 # get current data rates
 data = conversion_rates.currency_convector().get("date")
+
 
 # list comprehension of keys rates
 currencies = [key for key in conversion_rates.currency_convector().get("rates")]
