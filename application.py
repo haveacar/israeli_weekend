@@ -104,7 +104,7 @@ def about():
 
 @application.route('/airlines')
 def airlines():
-    """About page"""
+    """Airlines page"""
     return render_template('airlines.html')
 
 if __name__ == '__main__':
