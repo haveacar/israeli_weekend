@@ -22,13 +22,21 @@ currencies = [key for key in conversion_rates.currency_convector().get("rates")]
 # emission calculate
 fly_green = Carbon()
 
+MON=('June', 'July', 'August')
 
 @application.route('/', methods=['GET', 'POST'])
 @application.route('/home', methods=['GET', 'POST'])
 def home():
     """index page"""
-    return render_template('index.html', data_departure=departure_date, data_return=return_date, cheap_month=month_name)
-
+    if request.method == 'POST':
+        selected = request.form['from1']
+        print(selected)
+        return render_template('index.html', data_departure='2023-08-15_2023-08-16', data_return='2023-08-18_2023-08-21',
+             cheap_month=month_name, monthes=MON)
+    else:
+        print(departure_date, return_date)
+        return render_template('index.html', data_departure=departure_date, data_return=return_date,
+                               cheap_month=month_name, monthes=MON)
 
 @application.route('/search')
 def search():

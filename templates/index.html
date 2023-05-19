@@ -15,11 +15,25 @@
               </a>
             </div>
         </div>
+
     <!-- Kiwi-->
         <div>
             <h2>Book cheap flights from Tel Aviv</h2>
             <h3> In {{ cheap_month }} </h3>
             <h6>Price for Round-Trip(2 ways) for One person </h6>
+            <div>
+                <form method="post">
+                    <label for="from_month">Month:</label>
+                    <select name="from1" id="from1">
+                        {% for month in monthes %}
+                            <option value="{{ month }}">{{ month }}</option>
+                        {% endfor %}
+                    </select>
+                    <br><br>
+                    <button class='search-button'type="submit">Go</button>
+                </form>
+            <br><br>
+            </div>
             <div id="widget-holder"></div>
                 <script
                 data-currency="ILS"
