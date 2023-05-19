@@ -27,7 +27,7 @@ def generate_months()->list:
     return month_list
 
 
-def get_dates(month_i:str)-> tuple:
+def get_dates(month_i:str, method_post=False)-> tuple:
     """
     func to generate departing date and return with Israel preferences
     :return: tuple of strings
@@ -38,7 +38,11 @@ def get_dates(month_i:str)-> tuple:
     month_index = month_list.index(month_i)
 
     choice = datetime.timedelta(days=30 * month_index)
-    future_date = current_date + choice
+    if method_post:
+        date_object = datetime.date(current_date.year, current_date.month, 1)
+        future_date = date_object + choice
+
+    else:future_date = current_date + choice
 
     # Loop until we find a Thursday day
     while future_date.weekday() != 3:
@@ -53,7 +57,7 @@ def get_dates(month_i:str)-> tuple:
 
     return data_departure, data_return
 
-print(get_dates('August'))
+
 
 def get_data_travel(number_weeks=3) -> tuple:
     """

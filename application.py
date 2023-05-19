@@ -31,7 +31,7 @@ def home():
         selected = request.form['from1']
 
         # get dates
-        departure_d, return_d = get_dates(selected)
+        departure_d, return_d = get_dates(selected, method_post=True)
 
         return render_template('index.html', data_departure=f'{departure_d}', data_return=f'{return_d}',
                                cheap_month=selected, months=months)
