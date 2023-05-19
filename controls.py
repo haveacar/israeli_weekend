@@ -8,14 +8,58 @@ from keys_api import *
 CURRENT_PATH = os.path.dirname(__file__)
 CURRENT_PATCH_JASON = os.path.join(CURRENT_PATH, "static")
 
+MONTH = 6
+current_date = datetime.date.today()
+
+def generate_months()->list:
+    """
+    Func generate list months from current date
+    :return: list months names
+    """
+    month_list = []
+
+
+    # generate list months from current date
+    for x in range(MONTH):
+        next_month = current_date + datetime.timedelta(x *30)
+        month_list.append(next_month.strftime('%B'))
+
+    return month_list
+
+
+def get_dates(month_i:str)-> tuple:
+    """
+    func to generate departing date and return with Israel preferences
+    :return: tuple of strings
+    """
+    # get moths list
+    month_list = generate_months()
+    # get index choice month
+    month_index = month_list.index(month_i)
+
+    choice = datetime.timedelta(days=30 * month_index)
+    future_date = current_date + choice
+
+    # Loop until we find a Thursday day
+    while future_date.weekday() != 3:
+        future_date += datetime.timedelta(days=1)
+
+    # create departure string
+    data_departure = f"{future_date}_{future_date + datetime.timedelta(days=1)}"
+
+    # create return string
+    sunday_return = future_date + datetime.timedelta(days=3)
+    data_return = f"{sunday_return}_{sunday_return + datetime.timedelta(days=3)}"
+
+    return data_departure, data_return
+
+print(get_dates('August'))
 
 def get_data_travel(number_weeks=3) -> tuple:
     """
     func to generate departing date and return with Israel preferences
     :return: tuple of strings
     """
-
-    current_date = datetime.date.today()
 
     # Add two weeks to the current date
     two_weeks = datetime.timedelta(weeks=number_weeks)

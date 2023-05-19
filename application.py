@@ -7,10 +7,9 @@ application = Flask(__name__)
 # get departure_date return_date
 departure_date, return_date = get_data_travel()
 
-date_obj = datetime.datetime.strptime(departure_date.split('_')[0], '%Y-%m-%d')
+months = generate_months()
 
-# extract the month name
-month_name = date_obj.strftime('%B')
+
 
 # currency convector
 conversion_rates = Currency()
@@ -22,21 +21,30 @@ currencies = [key for key in conversion_rates.currency_convector().get("rates")]
 # emission calculate
 fly_green = Carbon()
 
-MON=('June', 'July', 'August')
 
 @application.route('/', methods=['GET', 'POST'])
 @application.route('/home', methods=['GET', 'POST'])
 def home():
     """index page"""
     if request.method == 'POST':
+        # get from form
         selected = request.form['from1']
-        print(selected)
-        return render_template('index.html', data_departure='2023-08-15_2023-08-16', data_return='2023-08-18_2023-08-21',
-             cheap_month=month_name, monthes=MON)
+
+        # get dates
+        departure_d, return_d = get_dates(selected)
+
+        return render_template('index.html', data_departure=f'{departure_d}', data_return=f'{return_d}',
+                               cheap_month=selected, months=months)
     else:
-        print(departure_date, return_date)
+        # current date timedelta 2 weeks
+        search_date = current_date + datetime.timedelta(weeks=2)
+        month_name = search_date.strftime('%B')
+        # get dates
+        departure_date, return_date = get_dates(month_name)
+
         return render_template('index.html', data_departure=departure_date, data_return=return_date,
-                               cheap_month=month_name, monthes=MON)
+                               cheap_month=month_name, months=months)
+
 
 @application.route('/search')
 def search():
@@ -82,10 +90,10 @@ def carbon():
 
         # output roundtrip
         trip = ""
-        if round_trip: trip ="(Round Trip)"
+        if round_trip: trip = "(Round Trip)"
         try:
             # get result from carbon api
-            result = fly_green.carbon_request(from_city, to_city, round_trip,int(passengers_n))
+            result = fly_green.carbon_request(from_city, to_city, round_trip, int(passengers_n))
             distance = result['data']['attributes']['distance_value']
             carbon_kg = result['data']['attributes']['carbon_kg']
         except:
@@ -95,7 +103,8 @@ def carbon():
         else:
             return render_template('carbon.html', from_city=f' From : {from_city}', to_city=f'To: {to_city}{trip}',
 
-                                   distance=f'Distance:{distance} km', carbon_kg=f'Calculated emissions: {carbon_kg} kg')
+                                   distance=f'Distance:{distance} km',
+                                   carbon_kg=f'Calculated emissions: {carbon_kg} kg')
     else:
         return render_template('carbon.html')
 
@@ -105,15 +114,18 @@ def contact():
     """Contact Us page"""
     return render_template('contact.html')
 
+
 @application.route('/about')
 def about():
     """About page"""
     return render_template('about.html')
 
+
 @application.route('/airlines')
 def airlines():
     """Airlines page"""
     return render_template('airlines.html')
+
 
 if __name__ == '__main__':
     application.run(port=5002, debug=True)
