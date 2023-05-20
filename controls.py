@@ -27,7 +27,7 @@ def generate_months() -> list:
     return month_list
 
 
-def get_dates(month_i: str, method_post=False) -> tuple:
+def get_dates(month_i: str, method_post=False, week=0) -> tuple:
     """
     func to generate departing date and return with Israel preferences
     :return: tuple of strings
@@ -39,9 +39,15 @@ def get_dates(month_i: str, method_post=False) -> tuple:
 
     # time delta
     choice = datetime.timedelta(days=30 * month_index)
+    # post method
     if method_post:
         date_object = datetime.date(current_date.year, current_date.month, 1)
-        future_date = date_object + choice
+
+        # week choice
+        future_date = date_object + choice + datetime.timedelta(days=7 * int(week) - 1)
+        # choice date cannot smaller then current
+        if future_date < current_date:
+            future_date = current_date
 
     else:
         future_date = current_date + choice

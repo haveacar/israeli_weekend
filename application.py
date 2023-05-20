@@ -26,13 +26,14 @@ def home():
     """index page"""
     if request.method == 'POST':
         # get from form
-        selected = request.form['from1']
+        selected_month = request.form['from1']
+        selected_week = request.form['from2']
 
         # get dates
-        departure_d, return_d = get_dates(selected, method_post=True)
+        departure_d, return_d = get_dates(selected_month, method_post = True, week = selected_week)
 
         return render_template('index.html', data_departure=f'{departure_d}', data_return=f'{return_d}',
-                               cheap_month=selected, months=months, weeks = WEEKS)
+                               cheap_month=selected_month, months=months, weeks = WEEKS)
     else:
         # current date timedelta 2 weeks
         search_date = current_date + datetime.timedelta(weeks=2)
