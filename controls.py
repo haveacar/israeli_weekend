@@ -8,18 +8,49 @@ from keys_api import *
 CURRENT_PATH = os.path.dirname(__file__)
 CURRENT_PATCH_JASON = os.path.join(CURRENT_PATH, "static")
 
+MONTH = 6
+current_date = datetime.date.today()
 
-def get_data_travel(number_weeks=3) -> tuple:
+
+def generate_months() -> list:
+    """
+    Func generate list months from current date
+    :return: list months names
+    """
+    month_list = []
+
+    # generate list months from current date
+    for x in range(MONTH):
+        next_month = current_date + datetime.timedelta(x * 30)
+        month_list.append(next_month.strftime('%B'))
+
+    return month_list
+
+
+def get_dates(month_i: str, method_post=False, week=0) -> tuple:
     """
     func to generate departing date and return with Israel preferences
     :return: tuple of strings
     """
+    # get moths list
+    month_list = generate_months()
+    # get index choice month
+    month_index = month_list.index(month_i)
 
-    current_date = datetime.date.today()
+    # time delta
+    choice = datetime.timedelta(days=30 * month_index)
+    # post method
+    if method_post:
+        date_object = datetime.date(current_date.year, current_date.month, 1)
 
-    # Add two weeks to the current date
-    two_weeks = datetime.timedelta(weeks=number_weeks)
-    future_date = current_date + two_weeks
+        # week choice
+        future_date = date_object + choice + datetime.timedelta(days=7 * int(week) - 1)
+        # choice date cannot smaller then current
+        if future_date < current_date:
+            future_date = current_date
+
+    else:
+        future_date = current_date + choice
 
     # Loop until we find a Thursday day
     while future_date.weekday() != 3:
@@ -37,9 +68,6 @@ def get_data_travel(number_weeks=3) -> tuple:
 
 class Currency:
     '''Currency convertor'''
-
-    def __init__(self):
-        pass
 
     def currency_convector(self):
 
@@ -98,8 +126,8 @@ class Currency:
 
 
 class Carbon:
+    """This class is responsible for talking to the Flight Search API."""
 
-    # This class is responsible for talking to the Flight Search API.
     def get_iata_code(self, city: str) -> str | None:
         """
         Func request to kivi for get Iata code
@@ -125,7 +153,7 @@ class Carbon:
 
             return response.json()['locations'][0]['code']
 
-    def carbon_request(self, departure_city: str, destination_city: str, return_t= False, passenger: int = 1):
+    def carbon_request(self, departure_city: str, destination_city: str, return_t=False, passenger: int = 1):
         """
         Func request to carbon for calculate co2
         :param departure_city: str
@@ -174,5 +202,3 @@ class Carbon:
         else:
             res = response.json()
             return res
-
-
