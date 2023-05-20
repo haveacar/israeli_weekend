@@ -29,6 +29,12 @@
                             <option value="{{ month }}">{{ month }}</option>
                         {% endfor %}
                     </select>
+                    <label for="Weeks">Week: </label>
+                    <select name="from2" id="from2">
+                        {% for week in weeks %}
+                            <option value="{{ week }}">{{ week }}</option>
+                        {% endfor %}
+                    </select>
                     <br><br>
                     <button class='search-button'type="submit">Go</button>
                 </form>

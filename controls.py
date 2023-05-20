@@ -11,23 +11,23 @@ CURRENT_PATCH_JASON = os.path.join(CURRENT_PATH, "static")
 MONTH = 6
 current_date = datetime.date.today()
 
-def generate_months()->list:
+
+def generate_months() -> list:
     """
     Func generate list months from current date
     :return: list months names
     """
     month_list = []
 
-
     # generate list months from current date
     for x in range(MONTH):
-        next_month = current_date + datetime.timedelta(x *30)
+        next_month = current_date + datetime.timedelta(x * 30)
         month_list.append(next_month.strftime('%B'))
 
     return month_list
 
 
-def get_dates(month_i:str, method_post=False)-> tuple:
+def get_dates(month_i: str, method_post=False) -> tuple:
     """
     func to generate departing date and return with Israel preferences
     :return: tuple of strings
@@ -37,37 +37,14 @@ def get_dates(month_i:str, method_post=False)-> tuple:
     # get index choice month
     month_index = month_list.index(month_i)
 
+    # time delta
     choice = datetime.timedelta(days=30 * month_index)
     if method_post:
         date_object = datetime.date(current_date.year, current_date.month, 1)
         future_date = date_object + choice
 
-    else:future_date = current_date + choice
-
-    # Loop until we find a Thursday day
-    while future_date.weekday() != 3:
-        future_date += datetime.timedelta(days=1)
-
-    # create departure string
-    data_departure = f"{future_date}_{future_date + datetime.timedelta(days=1)}"
-
-    # create return string
-    sunday_return = future_date + datetime.timedelta(days=3)
-    data_return = f"{sunday_return}_{sunday_return + datetime.timedelta(days=3)}"
-
-    return data_departure, data_return
-
-
-
-def get_data_travel(number_weeks=3) -> tuple:
-    """
-    func to generate departing date and return with Israel preferences
-    :return: tuple of strings
-    """
-
-    # Add two weeks to the current date
-    two_weeks = datetime.timedelta(weeks=number_weeks)
-    future_date = current_date + two_weeks
+    else:
+        future_date = current_date + choice
 
     # Loop until we find a Thursday day
     while future_date.weekday() != 3:
@@ -85,9 +62,6 @@ def get_data_travel(number_weeks=3) -> tuple:
 
 class Currency:
     '''Currency convertor'''
-
-    def __init__(self):
-        pass
 
     def currency_convector(self):
 
@@ -146,8 +120,8 @@ class Currency:
 
 
 class Carbon:
+    """This class is responsible for talking to the Flight Search API."""
 
-    # This class is responsible for talking to the Flight Search API.
     def get_iata_code(self, city: str) -> str | None:
         """
         Func request to kivi for get Iata code
@@ -173,7 +147,7 @@ class Carbon:
 
             return response.json()['locations'][0]['code']
 
-    def carbon_request(self, departure_city: str, destination_city: str, return_t= False, passenger: int = 1):
+    def carbon_request(self, departure_city: str, destination_city: str, return_t=False, passenger: int = 1):
         """
         Func request to carbon for calculate co2
         :param departure_city: str
@@ -222,5 +196,3 @@ class Carbon:
         else:
             res = response.json()
             return res
-
-

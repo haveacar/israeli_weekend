@@ -4,11 +4,9 @@ from constants import *
 
 application = Flask(__name__)
 
-# get departure_date return_date
-departure_date, return_date = get_data_travel()
 
 months = generate_months()
-
+WEEKS= [1,2,3,4]
 
 
 # currency convector
@@ -34,7 +32,7 @@ def home():
         departure_d, return_d = get_dates(selected, method_post=True)
 
         return render_template('index.html', data_departure=f'{departure_d}', data_return=f'{return_d}',
-                               cheap_month=selected, months=months)
+                               cheap_month=selected, months=months, weeks = WEEKS)
     else:
         # current date timedelta 2 weeks
         search_date = current_date + datetime.timedelta(weeks=2)
@@ -43,7 +41,7 @@ def home():
         departure_date, return_date = get_dates(month_name)
 
         return render_template('index.html', data_departure=departure_date, data_return=return_date,
-                               cheap_month=month_name, months=months)
+                               cheap_month=month_name, months=months, weeks = WEEKS)
 
 
 @application.route('/search')
