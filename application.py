@@ -4,17 +4,14 @@ from constants import *
 
 application = Flask(__name__)
 
-
 months = generate_months()
-WEEKS= [1,2,3,4]
-
+WEEKS = [1, 2, 3, 4]
 
 # currency convector
-conversion_rates = Currency()
-# get current data rates
-data = conversion_rates.currency_convector().get("date")
-# list comprehension of keys rates
-currencies = [key for key in conversion_rates.currency_convector().get("rates")]
+
+# get data request
+currency_data = receive_data()
+
 
 # emission calculate
 fly_green = Carbon()
@@ -30,10 +27,10 @@ def home():
         selected_week = request.form['from2']
 
         # get dates
-        departure_d, return_d = get_dates(selected_month, method_post = True, week = selected_week)
+        departure_d, return_d = get_dates(selected_month, method_post=True, week=selected_week)
 
         return render_template('index.html', data_departure=f'{departure_d}', data_return=f'{return_d}',
-                               cheap_month=selected_month, months=months, weeks = WEEKS)
+                               cheap_month=selected_month, months=months, weeks=WEEKS)
     else:
         # current date timedelta 2 weeks
         search_date = current_date + datetime.timedelta(weeks=2)
@@ -42,7 +39,7 @@ def home():
         departure_date, return_date = get_dates(month_name)
 
         return render_template('index.html', data_departure=departure_date, data_return=return_date,
-                               cheap_month=month_name, months=months, weeks = WEEKS)
+                               cheap_month=month_name, months=months, weeks=WEEKS)
 
 
 @application.route('/search')
@@ -60,15 +57,21 @@ def currency():
         from_currency = request.form['from_currency'][:3]
         to_currency = request.form['to_currency'][:3]
         # get conversion rate
-        conversion_rate = conversion_rates.currency_convector().get("rates")[to_currency] / \
-                          conversion_rates.currency_convector().get("rates")[from_currency]
+        if currency_data != False:
+            # get current data rates
+            data = currency_data.get("date")
+            conversion_rate = currency_data.get("rates")[to_currency] / \
+                              currency_data.get("rates")[from_currency]
 
-        converted_amount = round(amount * conversion_rate, 2)  # round
-        # return template rates
-        return render_template('currency.html', data=data, amount=amount, from_currency=from_currency + " =",
-                               converted_amount=converted_amount, to_currency=to_currency, currencies=CURRENCY_NAMES)
+            converted_amount = round(amount * conversion_rate, 2)  # round
+            # return template rates
+            return render_template('currency.html', data=f'Rates from Data: {data}', amount=amount, from_currency=from_currency + " =",
+                                   converted_amount=converted_amount, to_currency=to_currency, currencies=CURRENCY_NAMES)
+
+        else:
+            return render_template('currency.html', data="Oops:( Something Wrong", currencies=CURRENCY_NAMES)
     else:
-        return render_template('currency.html', data=data, currencies=CURRENCY_NAMES)
+        return render_template('currency.html', currencies=CURRENCY_NAMES)
 
 
 @application.route('/booking')

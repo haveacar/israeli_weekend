@@ -66,63 +66,26 @@ def get_dates(month_i: str, method_post=False, week=0) -> tuple:
     return data_departure, data_return
 
 
-class Currency:
-    '''Currency convertor'''
 
-    def currency_convector(self):
+def receive_data():
+    """
+        Receive_data func check
+    :return:  dict(collected_rates) or False
+    """
+    try:
+        # receive data
+        response_data = requests.get(REQUEST_URL, headers={"UserAgent": "XY", "apikey": API_KEY_CUR}, timeout=5)
+        print(response_data)
+        collected_rates = json.loads(response_data.text)
 
-        def receive_data():
-            """
-            Receive_data func check
-            :return:  dict(collected_rates) or False
-            """
-            try:
-                # receive data
-                response_data = requests.get(REQUEST_URL, headers={"UserAgent": "XY", "apikey": API_KEY_CUR}, timeout=5)
-                print(response_data)
-                collected_rates = json.loads(response_data.text)
+        if collected_rates.get("success") == True: return collected_rates
 
-                if collected_rates.get("success") == True: return collected_rates
+    except requests.exceptions.Timeout:
+        print("Connection timed out")
+        return False
 
-            except requests.exceptions.Timeout:
-                print("Connection timed out")
-                return False
-
-            except:
-                return False
-
-        def reload_rates() -> dict:
-            """
-            Func Reload_data checks date from file
-            if date!= date.now try upload
-            :return: dict (rates), str(date)
-            """
-            time_now = datetime.datetime.now().strftime("%Y-%m-%d")
-            # open rates from file
-            with open(os.path.join(CURRENT_PATCH_JASON, "data_rates.json")) as f:
-                rates_from_file = json.load(f)
-            rates = rates_from_file
-
-            # check from file current date
-            if rates_from_file.get("date") != time_now:
-                print("Uploading Data")
-                rates = receive_data()
-
-                # cannot receive data
-                if rates == False:
-                    print("Cannot update")
-                    rates = rates_from_file
-                else:
-                    print("Uploading successful")
-                    # create file
-                    with open(os.path.join(CURRENT_PATCH_JASON, "data_rates.json"), "w") as f:
-                        json.dump(rates, f, indent=4)
-                        pass
-            return rates
-
-        all_rates = reload_rates()
-
-        return all_rates
+    except:
+        return False
 
 
 class Carbon:
