@@ -7,13 +7,15 @@
     <div style="max-width:80%; display:block; margin: auto;">
         <img class="img-fluid" src="{{ url_for('static', filename='img/forest.jpg') }}" alt="..."/>
     </div>
-    <div class="button-div">
+    <div style="text-align:center;">
         <form method="post">
             <br>
           <label for="input1">From City:</label>
           <input type="text" id="input1" name="input1" placeholder="Tel Aviv" required>
+          <br>
           <label for="input2">To City: </label>
           <input type="text" id="input2" name="input2" placeholder="Barcelona" required>
+          <br>
           <label for="input3"> Passengers:</label>
           <input type="number" id="input3" name="input3"  required min="1"><br><br>
           <label><input type="checkbox" name="checkbox" value="True">Round Trip</label>

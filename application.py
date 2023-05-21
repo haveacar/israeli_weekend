@@ -7,11 +7,9 @@ application = Flask(__name__)
 months = generate_months()
 WEEKS = [1, 2, 3, 4]
 
-# currency convector
 
 # get data request
 currency_data = receive_data()
-
 
 # emission calculate
 fly_green = Carbon()
