@@ -621,13 +621,14 @@ progress {
     max-width: 100%;
     height: auto;
 }
-.image-container {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px auto;
+@media (min-width: 768px) {
+    .image-container {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px auto;
 
+    }
 }
-
 
 .image-container a {
   margin: 30px auto;
@@ -7586,6 +7587,12 @@ textarea.form-control-lg {
     margin: 0 auto;
     padding: 5px;
 
+}
+
+@media (max-width: 576px) {
+  .booking-div {
+    height: 600px; /* Set desired height for mobile version */
+  }
 }
 
 .fixed-bottom {
