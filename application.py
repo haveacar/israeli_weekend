@@ -4,12 +4,7 @@ from constants import *
 
 application = Flask(__name__)
 
-months = generate_months()
 WEEKS = [1, 2, 3, 4]
-
-
-# get data request
-currency_data = receive_data()
 
 # emission calculate
 fly_green = Carbon()
@@ -18,6 +13,7 @@ fly_green = Carbon()
 @application.route('/', methods=['GET', 'POST'])
 @application.route('/home', methods=['GET', 'POST'])
 def home():
+    months = generate_months()
     """index page"""
     if request.method == 'POST':
         # get from form
@@ -55,6 +51,8 @@ def currency():
         from_currency = request.form['from_currency'][:3]
         to_currency = request.form['to_currency'][:3]
         # get conversion rate
+        # get data request
+        currency_data = receive_data()
         if currency_data != False:
             # get current data rates
             data = currency_data.get("date")
