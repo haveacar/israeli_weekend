@@ -13,8 +13,9 @@ fly_green = Carbon()
 @application.route('/', methods=['GET', 'POST'])
 @application.route('/home', methods=['GET', 'POST'])
 def home():
-    months = generate_months()
     """index page"""
+    months = generate_months()
+
     if request.method == 'POST':
         # get from form
         selected_month = request.form['from1']
@@ -50,7 +51,7 @@ def currency():
         amount = float(request.form['amount'])
         from_currency = request.form['from_currency'][:3]
         to_currency = request.form['to_currency'][:3]
-        # get conversion rate
+
         # get data request
         currency_data = receive_data()
         if currency_data != False:
