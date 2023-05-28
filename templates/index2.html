@@ -20,23 +20,51 @@
     <!-- Kiwi-->
     <div>
         <h2>Book cheap flights from Tel Aviv</h2>
-        <!-- Kiwi-->
-        <div id="widget-holder"></div>
-            <script
-            data-currency="ILS"
-            data-lang="en"
-            data-affilid="haveacaronlywidgets"
-            data-from="tel-aviv_il"
-            data-cabin="ECONOMY"
-            data-transport-types="FLIGHT"
-            data-stop-number="1"
-            data-limit="15"
-            data-sort-by="price"
-            src="https://widgets.kiwi.com/scripts/widget-search-iframe.js">
-            </script>
+        <h3> In {{ cheap_month }} </h3>
+        <h6>Price for Round-Trip(2 ways) for One person </h6>
+        <div>
+            <form method="post">
+                <label for="from_month">Month:</label>
+                <select name="from1" id="from1">
+                    {% for month in months %}
+                        <option value="{{ month }}">{{ month }}</option>
+                    {% endfor %}
+                </select>
+                <label for="Weeks">Week: </label>
+                <select name="from2" id="from2">
+                    {% for week in weeks %}
+                        <option value="{{ week }}">{{ week }}</option>
+                    {% endfor %}
+                </select>
+                <br><br>
+                <button class='search-button' type="submit">Go</button>
+            </form>
+            <br><br>
         </div>
+        <div id="widget-holder"></div>
+        <script
+                data-currency="ILS"
+                data-lang="en"
+                data-affilid="haveacaronlywidgets"
+                data-from="tel-aviv_il"
+                data-departure="{{ data_departure }}"
+                data-return="{{ data_return }}"
+                data-cabin="ECONOMY"
+                data-transport-types="FLIGHT"
+                data-stop-number="0"
+                data-limit="25"
+                data-tile-limit="20"
+                data-sort-by="price"
+                data-results-only="true"
+                src="https://widgets.kiwi.com/scripts/widget-search-iframe.js">
+        </script>
     </div>
-    <hr>
+    <div class="button-div">
+        <h1>OR</h1>
+        <a href="/search">
+            <button class="search-button">Search Flight</button>
+        </a>
+    </div>
     <br><br>
     <!-- Booking widget-->
     <div class="booking-div">
