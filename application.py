@@ -5,23 +5,31 @@ from controls import *
 from constants import *
 
 application = Flask(__name__)
-"""
-application.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///example.sqlite"
+
+application.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:Stason2407@datacolldb.curf1kkopmp5.eu-central-1.rds.amazonaws.com'
 db = SQLAlchemy(application)
 
-class User(db.Model):
+class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, unique=True, nullable=False)
+    name = db.Column(db.String(300), nullable=False)
+    country = db.Column(db.String(300), nullable=False)
+    pos_text = db.Column(db.Text, nullable=False)
+    neg_text = db.Column(db.Text, nullable=False)
+
+
+    def __repr__(self):
+        return '<Review %r>' % self.id
 
 with application.app_context():
     db.create_all()
 
+
+"""
     db.session.add(User(username="example"))
     db.session.commit()
 
-    users = db.session.execute(db.select(User)).scalars()
-"""
-WEEKS = [1, 2, 3, 4]
+    users = db.session.execute(db.select(User)).scalars()"""
+
 
 # emission calculate
 fly_green = Carbon()
@@ -34,12 +42,6 @@ def home():
     departure_date, return_date = get_dates()
     return render_template('index.html', data_departure=departure_date, data_return=return_date)
 
-
-
-@application.route('/search')
-def search():
-    """air tickets search page"""
-    return render_template('search.html')
 
 
 @application.route('/currency', methods=['GET', 'POST'])
@@ -69,11 +71,6 @@ def currency():
     else:
         return render_template('currency.html', currencies=CURRENCY_NAMES)
 
-
-@application.route('/booking')
-def booking():
-    """booking.com search"""
-    return render_template('booking.html')
 
 
 @application.route('/carbon', methods=['GET', 'POST'])

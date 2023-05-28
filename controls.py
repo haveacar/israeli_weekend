@@ -82,9 +82,10 @@ class Carbon:
             return None
 
         else:
-            response.raise_for_status()
 
+            response.raise_for_status()
             return response.json()['locations'][0]['code']
+
 
     def carbon_request(self, departure_city: str, destination_city: str, return_t=False, passenger: int = 1):
         """
