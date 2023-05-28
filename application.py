@@ -27,31 +27,13 @@ WEEKS = [1, 2, 3, 4]
 fly_green = Carbon()
 
 
-@application.route('/', methods=['GET', 'POST'])
-@application.route('/home', methods=['GET', 'POST'])
+@application.route('/')
+@application.route('/home')
 def home():
     """index page"""
-    months = generate_months()
+    departure_date, return_date = get_dates()
+    return render_template('index.html', data_departure=departure_date, data_return=return_date)
 
-    if request.method == 'POST':
-        # get from form
-        selected_month = request.form['from1']
-        selected_week = request.form['from2']
-
-        # get dates
-        departure_d, return_d = get_dates(selected_month, method_post=True, week=selected_week)
-
-        return render_template('index.html', data_departure=f'{departure_d}', data_return=f'{return_d}',
-                               cheap_month=selected_month, months=months, weeks=WEEKS)
-    else:
-        # current date timedelta 2 weeks
-        search_date = current_date + datetime.timedelta(weeks=2)
-        month_name = search_date.strftime('%B')
-        # get dates
-        departure_date, return_date = get_dates(month_name)
-
-        return render_template('index.html', data_departure=departure_date, data_return=return_date,
-                               cheap_month=month_name, months=months, weeks=WEEKS)
 
 
 @application.route('/search')
