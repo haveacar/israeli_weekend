@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% block title %}
+    Review
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Add Review</h1>
+        <form method="post">
+            <input type="text" name="title" id="title" class="form-control" placeholder="Place name"><br>
+            <input type="text" name="country" id="country" class="form-control" placeholder="Place country"><br>
+            <textarea type="text" name="positive" id="positive" class="form-control" placeholder="Positive Review"></textarea><br>
+            <textarea type="text" name="negative" id="negative" class="form-control" placeholder="Negative Review"></textarea><br>
+            <input type="file" name="title" id="title" class="form-control"><br><br>
+            <input type="submit" class="btn btn-success" value="Send Review"> <br><br>
+
+        </form>
+
+    </div>
+
+{% endblock %}

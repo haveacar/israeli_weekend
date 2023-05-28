@@ -142,6 +142,10 @@ def airlines():
     """Airlines page"""
     return render_template('airlines.html')
 
+@application.route('/posts')
+def posts():
+    """Posts page"""
+    return render_template('post.html')
 
 if __name__ == '__main__':
     application.run(port=5001, debug=True)
