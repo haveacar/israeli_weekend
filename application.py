@@ -1,9 +1,26 @@
 from flask import Flask, render_template, request
+from flask_sqlalchemy import SQLAlchemy
+
 from controls import *
 from constants import *
 
 application = Flask(__name__)
+"""
+application.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///example.sqlite"
+db = SQLAlchemy(application)
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, unique=True, nullable=False)
+
+with application.app_context():
+    db.create_all()
+
+    db.session.add(User(username="example"))
+    db.session.commit()
+
+    users = db.session.execute(db.select(User)).scalars()
+"""
 WEEKS = [1, 2, 3, 4]
 
 # emission calculate

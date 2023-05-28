@@ -4,8 +4,24 @@
 {% endblock %}
 
 {% block body %}
-
+         <!-- Booking widget-->
     <div class="booking-div">
-        <h3>Sorry In Work...</h3>
+        <ins class="bookingaff" data-aid="2342457" data-target_aid="2342457" data-prod="map" data-width="100%"
+             data-height="590" data-lang="en" data-currency="ILS" data-dest_id="0" data-dest_type="landmark"
+             data-latitude="34.7753949" data-longitude="32.4217786" data-landmark_name="Cyprus" data-mwhsb="0"
+             data-address="Paphos, Cyprus" data-zoom="9">
+            <!-- Anything inside will go away once widget is loaded. -->
+            <a href="//www.booking.com?aid=2342457">Booking.com</a>
+        </ins>
+        <script type="text/javascript">
+            (function (d, sc, u) {
+                var s = d.createElement(sc), p = d.getElementsByTagName(sc)[0];
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = u + '?v=' + (+new Date());
+                p.parentNode.insertBefore(s, p);
+            })(document, 'script', '//cf.bstatic.com/static/affiliate_base/js/flexiproduct.js');
+        </script>
     </div>
+    <br>
 {% endblock %}
