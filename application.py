@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 from controls import *
@@ -6,7 +6,8 @@ from constants import *
 
 application = Flask(__name__)
 
-application.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:Stason2407@datacolldb.curf1kkopmp5.eu-central-1.rds.amazonaws.com'
+# database PostgreSQL connect
+application.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:Stason2407@database-2.curf1kkopmp5.eu-central-1.rds.amazonaws.com'
 db = SQLAlchemy(application)
 
 class Review(db.Model):
@@ -23,8 +24,8 @@ class Review(db.Model):
 with application.app_context():
     db.create_all()
 
-
 """
+
     db.session.add(User(username="example"))
     db.session.commit()
 
@@ -121,10 +122,24 @@ def airlines():
     """Airlines page"""
     return render_template('airlines.html')
 
-@application.route('/posts')
+@application.route('/posts', methods=['GET', 'POST'])
 def posts():
     """Posts page"""
-    return render_template('post.html')
+    if request.method == "POST":
+        title = request.form["title"]
+        country = request.form["country"]
+        text_positive = request.form["positive"]
+        text_negative = request.form["negative"]
+
+        review =Review(name = title, country=country, pos_text=text_positive, neg_text=text_negative)
+        try:
+            db.session.add(review)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return 'Oops(: Database Error'
+    else:
+        return render_template('post.html')
 
 if __name__ == '__main__':
     application.run(port=5001, debug=True)
