@@ -37,7 +37,7 @@ fly_green = Carbon()
 def home():
     """index page"""
     departure_date, return_date = get_dates()
-    return render_template('index.html', data_departure=departure_date, data_return=return_date)
+    return render_template('index.html', data_departure=departure_date, data_return=return_date, stars = STARS)
 
 
 @application.route('/currency', methods=['GET', 'POST'])
