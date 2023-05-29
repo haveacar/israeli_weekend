@@ -7,7 +7,7 @@ from constants import *
 application = Flask(__name__)
 
 # database PostgreSQL connect
-application.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:Stason2407@database-2.curf1kkopmp5.eu-central-1.rds.amazonaws.com'
+application.config["SQLALCHEMY_DATABASE_URI"] = KEYS_DB
 db = SQLAlchemy(application)
 
 class Review(db.Model):
@@ -23,13 +23,6 @@ class Review(db.Model):
 
 with application.app_context():
     db.create_all()
-
-"""
-
-    db.session.add(User(username="example"))
-    db.session.commit()
-
-    users = db.session.execute(db.select(User)).scalars()"""
 
 
 # emission calculate
