@@ -1,4 +1,4 @@
-
+RATING = (1,2,3,4,5)
 CURRENCY_NAMES = (
     'AED - United Arab Emirates Dirham',
     'AFN - Afghan Afghani',

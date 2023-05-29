@@ -10,20 +10,23 @@ application = Flask(__name__)
 application.config["SQLALCHEMY_DATABASE_URI"] = KEYS_DB
 db = SQLAlchemy(application)
 
+
+# class DB
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(300), nullable=False)
     country = db.Column(db.String(300), nullable=False)
     pos_text = db.Column(db.Text, nullable=False)
     neg_text = db.Column(db.Text, nullable=False)
-
+    rating = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return '<Review %r>' % self.id
 
+
+# create table
 with application.app_context():
     db.create_all()
-
 
 # emission calculate
 fly_green = Carbon()
@@ -35,7 +38,6 @@ def home():
     """index page"""
     departure_date, return_date = get_dates()
     return render_template('index.html', data_departure=departure_date, data_return=return_date)
-
 
 
 @application.route('/currency', methods=['GET', 'POST'])
@@ -57,14 +59,15 @@ def currency():
 
             converted_amount = round(amount * conversion_rate, 2)  # round
             # return template rates
-            return render_template('currency.html', data=f'Rates from Data: {data}', amount=amount, from_currency=from_currency + " =",
-                                   converted_amount=converted_amount, to_currency=to_currency, currencies=CURRENCY_NAMES)
+            return render_template('currency.html', data=f'Rates from Data: {data}', amount=amount,
+                                   from_currency=from_currency + " =",
+                                   converted_amount=converted_amount, to_currency=to_currency,
+                                   currencies=CURRENCY_NAMES)
 
         else:
             return render_template('currency.html', data="Oops:( Something Wrong", currencies=CURRENCY_NAMES)
     else:
         return render_template('currency.html', currencies=CURRENCY_NAMES)
-
 
 
 @application.route('/carbon', methods=['GET', 'POST'])
@@ -115,24 +118,28 @@ def airlines():
     """Airlines page"""
     return render_template('airlines.html')
 
+
 @application.route('/posts', methods=['GET', 'POST'])
 def posts():
     """Posts page"""
     if request.method == "POST":
-        title = request.form["title"]
-        country = request.form["country"]
+        title = request.form["title"].capitalize()
+        country = request.form["country"].capitalize()
         text_positive = request.form["positive"]
         text_negative = request.form["negative"]
+        rating = int(request.form["rating"])
+        # create an instance of the class
+        review = Review(name=title, country=country, pos_text=text_positive, neg_text=text_negative, rating=rating)
 
-        review =Review(name = title, country=country, pos_text=text_positive, neg_text=text_negative)
         try:
             db.session.add(review)
             db.session.commit()
             return redirect('/')
         except:
-            return 'Oops(: Database Error'
+            return render_template('post.html', rating=RATING, error_db="Oops(: Something Wrong!")
     else:
-        return render_template('post.html')
+        return render_template('post.html', rating=RATING)
+
 
 if __name__ == '__main__':
     application.run(port=5001, debug=True)
