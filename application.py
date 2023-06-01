@@ -3,6 +3,7 @@ from controls import *
 from constants import *
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+
 application = Flask(__name__)
 
 # database PostgreSQL connect
@@ -140,4 +141,4 @@ def posts():
 
 
 if __name__ == '__main__':
-    application.run(port=5001, debug=True)
+    application.run(port=5000, debug=True)
