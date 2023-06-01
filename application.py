@@ -1,46 +1,42 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from controls import *
 from constants import *
-
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 application = Flask(__name__)
 
-WEEKS = [1, 2, 3, 4]
+# database PostgreSQL connect
+application.config["SQLALCHEMY_DATABASE_URI"] = KEYS_DB
+db = SQLAlchemy(application)
+
+
+# class DB
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(300), nullable=False)
+    country = db.Column(db.String(300), nullable=False)
+    pos_text = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __repr__(self):
+        return '<Review %r>' % self.id
+
+
+# create table
+with application.app_context():
+    db.create_all()
 
 # emission calculate
 fly_green = Carbon()
 
 
-@application.route('/', methods=['GET', 'POST'])
-@application.route('/home', methods=['GET', 'POST'])
+@application.route('/')
+@application.route('/home')
 def home():
     """index page"""
-    months = generate_months()
-
-    if request.method == 'POST':
-        # get from form
-        selected_month = request.form['from1']
-        selected_week = request.form['from2']
-
-        # get dates
-        departure_d, return_d = get_dates(selected_month, method_post=True, week=selected_week)
-
-        return render_template('index.html', data_departure=f'{departure_d}', data_return=f'{return_d}',
-                               cheap_month=selected_month, months=months, weeks=WEEKS)
-    else:
-        # current date timedelta 2 weeks
-        search_date = current_date + datetime.timedelta(weeks=2)
-        month_name = search_date.strftime('%B')
-        # get dates
-        departure_date, return_date = get_dates(month_name)
-
-        return render_template('index.html', data_departure=departure_date, data_return=return_date,
-                               cheap_month=month_name, months=months, weeks=WEEKS)
-
-
-@application.route('/search')
-def search():
-    """air tickets search page"""
-    return render_template('search.html')
+    departure_date, return_date = get_dates()
+    return render_template('index.html', data_departure=departure_date, data_return=return_date, stars = STARS)
 
 
 @application.route('/currency', methods=['GET', 'POST'])
@@ -62,19 +58,15 @@ def currency():
 
             converted_amount = round(amount * conversion_rate, 2)  # round
             # return template rates
-            return render_template('currency.html', data=f'Rates from Data: {data}', amount=amount, from_currency=from_currency + " =",
-                                   converted_amount=converted_amount, to_currency=to_currency, currencies=CURRENCY_NAMES)
+            return render_template('currency.html', data=f'Rates from Data: {data}', amount=amount,
+                                   from_currency=from_currency + " =",
+                                   converted_amount=converted_amount, to_currency=to_currency,
+                                   currencies=CURRENCY_NAMES)
 
         else:
             return render_template('currency.html', data="Oops:( Something Wrong", currencies=CURRENCY_NAMES)
     else:
         return render_template('currency.html', currencies=CURRENCY_NAMES)
-
-
-@application.route('/booking')
-def booking():
-    """booking.com search"""
-    return render_template('booking.html')
 
 
 @application.route('/carbon', methods=['GET', 'POST'])
@@ -124,6 +116,27 @@ def about():
 def airlines():
     """Airlines page"""
     return render_template('airlines.html')
+
+
+@application.route('/posts', methods=['GET', 'POST'])
+def posts():
+    """Posts page"""
+    if request.method == "POST":
+        title = request.form["title"].capitalize()
+        country = request.form["country"].capitalize()
+        text_positive = request.form["positive"]
+        rating = int(request.form["rating"])
+        # create an instance of the class
+        review = Review(name=title, country=country, pos_text=text_positive, rating=rating)
+
+        try:
+            db.session.add(review)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return render_template('post.html', rating=RATING, error_db="Oops(: Something Wrong!")
+    else:
+        return render_template('post.html', rating=RATING)
 
 
 if __name__ == '__main__':
