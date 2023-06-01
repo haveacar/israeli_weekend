@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request, redirect
-from flask_sqlalchemy import SQLAlchemy
-
 from controls import *
 from constants import *
-
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 application = Flask(__name__)
 
 # database PostgreSQL connect
@@ -17,8 +16,8 @@ class Review(db.Model):
     name = db.Column(db.String(300), nullable=False)
     country = db.Column(db.String(300), nullable=False)
     pos_text = db.Column(db.Text, nullable=False)
-    neg_text = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow())
 
     def __repr__(self):
         return '<Review %r>' % self.id
@@ -126,10 +125,9 @@ def posts():
         title = request.form["title"].capitalize()
         country = request.form["country"].capitalize()
         text_positive = request.form["positive"]
-        text_negative = request.form["negative"]
         rating = int(request.form["rating"])
         # create an instance of the class
-        review = Review(name=title, country=country, pos_text=text_positive, neg_text=text_negative, rating=rating)
+        review = Review(name=title, country=country, pos_text=text_positive, rating=rating)
 
         try:
             db.session.add(review)
