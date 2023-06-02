@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
+from sqlalchemy import desc
+
 from controls import *
 from constants import *
 from flask_sqlalchemy import SQLAlchemy
@@ -23,19 +25,38 @@ class Review(db.Model):
     def __repr__(self):
         return '<Review %r>' % self.id
 
+def get_last_six_reviews():
+    return Review.query.order_by(desc(Review.date)).limit(6).all()
 
 # create table
 with application.app_context():
     db.create_all()
 
+
 # emission calculate
 fly_green = Carbon()
 
+def get_reviews() -> list:
+    """Func to get data from Database"""
+    reviews = Review.query.order_by(desc(Review.date)).all()
+    review_list = []
+    for review in reviews:
+        review_dict = {}
+        review_dict['id'] = review.id
+        review_dict['name'] = review.name
+        review_dict['country'] = review.country
+        review_dict['pos_text'] = review.pos_text
+        review_dict['rating'] = review.rating
+        review_dict['date'] = review.date.strftime('%Y-%m-%d %H:%M:%S')
+        review_list.append(review_dict)
+    return  review_list
 
 @application.route('/')
 @application.route('/home')
 def home():
     """index page"""
+    reviews_data = get_reviews()
+
     departure_date, return_date = get_dates()
     return render_template('index.html', data_departure=departure_date, data_return=return_date, stars = STARS)
 
