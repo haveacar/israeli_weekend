@@ -25,9 +25,9 @@ class Review(db.Model):
 
 
 # create table
-"""with application.app_context():
+with application.app_context():
     db.create_all()
-"""
+
 # emission calculate
 fly_green = Carbon()
 
