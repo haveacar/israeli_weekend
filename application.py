@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect
 from sqlalchemy import desc
 from controls import *
 from constants import *
@@ -53,15 +53,16 @@ def get_reviews() -> list:
 @application.route('/home')
 def home():
     """index page"""
+    # get data from database
     reviews_data = get_reviews()
     # create rating list comprehension
     star_list = [STAR * review['rating'] for review in reviews_data]
     # create names list comprehension
-    names_list = [review['name'] for review in reviews_data]
+    names_list = [(review['name'] + "-" + review['country']) for review in reviews_data]
     # create positive text
     pos_text = [review['pos_text'] for review in reviews_data]
 
-
+    # generate dates for search
     departure_date, return_date = get_dates()
     template_data = {
         'data_departure': departure_date,
@@ -70,7 +71,7 @@ def home():
     for i in range(len(reviews_data)):
         template_data[f'stars{i + 1}'] = star_list[i]
         template_data[f'thumbnail{i + 1}'] = names_list[i]
-        template_data[f'text{i + 1}'] = pos_text[i]
+        template_data[f'text{i + 1}'] = pos_text[i] if len(pos_text[i]) <50 else pos_text[i][:50]
 
     return render_template('index.html', **template_data)
 
@@ -161,11 +162,12 @@ def posts():
     if request.method == "POST":
         title = request.form["title"].capitalize()
         country = request.form["country"].capitalize()
-        text_positive = request.form["positive"]
+        text_positive = request.form["positive"].capitalize()
         rating = int(request.form["rating"])
-        # create an instance of the class
+        # create an instance of the class database
         review = Review(name=title, country=country, pos_text=text_positive, rating=rating)
         try:
+            #write to database
             db.session.add(review)
             db.session.commit()
             return redirect('/')
