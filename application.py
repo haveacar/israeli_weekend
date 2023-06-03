@@ -57,18 +57,23 @@ def home():
     # create rating list comprehension
     star_list = [STAR * review['rating'] for review in reviews_data]
     # create names list comprehension
-    names_list = [review['rating'] for review in reviews_data]
+    names_list = [review['name'] for review in reviews_data]
+    # create positive text
+    pos_text = [review['pos_text'] for review in reviews_data]
+
 
     departure_date, return_date = get_dates()
-    return render_template('index.html',
-                           data_departure=departure_date,
-                           data_return=return_date,
-                           stars1=star_list[0], # get stars from database
-                           stars2=star_list[1],
-                           stars3=star_list[2],
-                           stars4=star_list[3],
-                           stars5=star_list[4],
-                           stars6=star_list[5])
+    template_data = {
+        'data_departure': departure_date,
+        'data_return': return_date,
+    }
+    for i in range(len(reviews_data)):
+        template_data[f'stars{i + 1}'] = star_list[i]
+        template_data[f'thumbnail{i + 1}'] = names_list[i]
+        template_data[f'text{i + 1}'] = pos_text[i]
+
+    return render_template('index.html', **template_data)
+
 
 
 @application.route('/currency', methods=['GET', 'POST'])
