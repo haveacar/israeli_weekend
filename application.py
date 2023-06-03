@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, jsonify
 from sqlalchemy import desc
-
 from controls import *
 from constants import *
 from flask_sqlalchemy import SQLAlchemy
@@ -25,20 +24,18 @@ class Review(db.Model):
     def __repr__(self):
         return '<Review %r>' % self.id
 
-def get_last_six_reviews():
-    return Review.query.order_by(desc(Review.date)).limit(6).all()
 
 # create table
 with application.app_context():
     db.create_all()
 
-
 # emission calculate
 fly_green = Carbon()
 
+
 def get_reviews() -> list:
     """Func to get data from Database"""
-    reviews = Review.query.order_by(desc(Review.date)).all()
+    reviews = Review.query.order_by(desc(Review.date)).limit(6).all()
     review_list = []
     for review in reviews:
         review_dict = {}
@@ -49,16 +46,29 @@ def get_reviews() -> list:
         review_dict['rating'] = review.rating
         review_dict['date'] = review.date.strftime('%Y-%m-%d %H:%M:%S')
         review_list.append(review_dict)
-    return  review_list
+    return review_list
+
 
 @application.route('/')
 @application.route('/home')
 def home():
     """index page"""
     reviews_data = get_reviews()
+    # create rating list comprehension
+    star_list = [STAR * review['rating'] for review in reviews_data]
+    # create names list comprehension
+    names_list = [review['rating'] for review in reviews_data]
 
     departure_date, return_date = get_dates()
-    return render_template('index.html', data_departure=departure_date, data_return=return_date, stars = STARS)
+    return render_template('index.html',
+                           data_departure=departure_date,
+                           data_return=return_date,
+                           stars1=star_list[0], # get stars from database
+                           stars2=star_list[1],
+                           stars3=star_list[2],
+                           stars4=star_list[3],
+                           stars5=star_list[4],
+                           stars6=star_list[5])
 
 
 @application.route('/currency', methods=['GET', 'POST'])
@@ -150,7 +160,6 @@ def posts():
         rating = int(request.form["rating"])
         # create an instance of the class
         review = Review(name=title, country=country, pos_text=text_positive, rating=rating)
-
         try:
             db.session.add(review)
             db.session.commit()
