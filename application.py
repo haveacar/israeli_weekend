@@ -12,7 +12,7 @@ application.config["SQLALCHEMY_DATABASE_URI"] = KEYS_DB
 db = SQLAlchemy(application)
 
 
-# class DB
+# class DB review
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(300), nullable=False)
@@ -24,6 +24,14 @@ class Review(db.Model):
     def __repr__(self):
         return '<Review %r>' % self.id
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)
+    registered_on = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<User %r>' % self.email
 
 # create table
 with application.app_context():
@@ -176,6 +184,18 @@ def posts():
     else:
         return render_template('post.html', rating=RATING)
 
+@application.route('/login', methods=['GET', 'POST'])
+def login():
+    '''Login page'''
+
+    if request.method == "POST":
+        # get from page value
+        username = request.form.get('uname')
+        password = request.form.get('psw')
+
+        render_template('admin.html')
+    else:
+        return render_template('admin.html')
 
 if __name__ == '__main__':
     application.run(port=5000, debug=True)
