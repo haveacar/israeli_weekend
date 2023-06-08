@@ -188,7 +188,7 @@ def posts():
 @application.route('/login', methods=['GET', 'POST'])
 def login():
     '''Login page'''
-    error = None
+    error = ''
 
     if request.method == 'POST':
         # get from page
@@ -200,7 +200,7 @@ def login():
 
         if user: # check login
             hashed_password = user.password
-            if password_input == hashed_password: # check passsword
+            if password_input == hashed_password: # check password
                 return redirect('/posts')
             else:
                 return render_template('login.html', error_p="Invalid username or password")
