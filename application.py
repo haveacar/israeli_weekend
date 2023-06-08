@@ -187,7 +187,7 @@ def posts():
 
 @application.route('/login', methods=['GET', 'POST'])
 def login():
-    '''Login page'''
+    '''Login function'''
     error = ''
 
     if request.method == 'POST':
@@ -208,6 +208,16 @@ def login():
 
     else:
         return render_template('login.html', error_p=error)
+
+@application.route('/register', methods=['POST'])
+def register():
+    """"""
+    email = request.form.get('email')
+    password = request.form.get('password')
+    if psw_validation(password):status = "Registered"
+    else:status = "Incorrect password [8-10 digits] [A-Z] [0-9]"
+
+    return render_template("post.html", status_registration = status, rating=RATING)
 
 
 if __name__ == '__main__':
