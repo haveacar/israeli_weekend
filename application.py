@@ -1,10 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
 from sqlalchemy import desc
 from controls import *
 from constants import *
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
 
 # set up flask
 application = Flask(__name__)
@@ -13,8 +12,6 @@ application = Flask(__name__)
 application.config["SQLALCHEMY_DATABASE_URI"] = KEYS_DB
 
 db = SQLAlchemy(application)
-
-
 
 # class DB review
 class Review(db.Model):
@@ -86,7 +83,6 @@ def home():
         template_data[f'text{i + 1}'] = pos_text[i] if len(pos_text[i]) <50 else pos_text[i][:50]
 
     return render_template('index.html', **template_data)
-
 
 
 @application.route('/currency', methods=['GET', 'POST'])
@@ -188,9 +184,11 @@ def posts():
     else:
         return render_template('post.html', rating=RATING)
 
+
 @application.route('/login', methods=['GET', 'POST'])
 def login():
     '''Login page'''
+    error = None
 
     if request.method == 'POST':
         # get from page
@@ -200,23 +198,18 @@ def login():
         # Query database request
         user = Client.query.filter_by(email=login).first()
 
-        if user:
-            # user.password will give you the password
+        if user: # check login
             hashed_password = user.password
-            if hashed_password == password_input:
-                print("ok!")
-                return redirect(url_for('post'))  # 'post' should be a defined route in your Flask application
+            if password_input == hashed_password: # check passsword
+                return redirect('/posts')
             else:
-                error = "Invalid username or password."
-        else:
-                error = "Invalid username or password."
+                return render_template('login.html', error_p="Invalid username or password")
+        else: return render_template('login.html', error_p="Invalid username or password")
 
+    else:
         return render_template('login.html', error_p=error)
 
 
-    else:
-        return render_template('login.html')
-
 if __name__ == '__main__':
     application.run(port=5001, debug=True)
- # fix post method on function
+
