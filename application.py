@@ -44,6 +44,7 @@ fly_green = Carbon()
 
 def get_reviews() -> list:
     """Func to get data from Database"""
+
     reviews = Review.query.order_by(desc(Review.date)).limit(6).all()
     review_list = []
     for review in reviews:
@@ -225,6 +226,15 @@ def register():
 
     return render_template("post.html", status_registration = status, rating=RATING)
 
+@application.route('/handle_button', methods=['POST'])
+def handle_button():
+    """func return html page for choice card"""
+    card = int(request.form.get('card'))
+    # get data from database
+    reviews_data = get_reviews()
+    choice= reviews_data[card-1]
+
+    return render_template('full_post.html', title= choice['name'], country= choice['country'], text_field=choice['pos_text'])
 
 if __name__ == '__main__':
     application.run(port=5001, debug=True)
