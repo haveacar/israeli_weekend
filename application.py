@@ -44,19 +44,22 @@ fly_green = Carbon()
 
 def get_reviews() -> list:
     """Func to get data from Database"""
-
-    reviews = Review.query.order_by(desc(Review.date)).limit(6).all()
     review_list = []
-    for review in reviews:
-        review_dict = {}
-        review_dict['id'] = review.id
-        review_dict['name'] = review.name
-        review_dict['country'] = review.country
-        review_dict['pos_text'] = review.pos_text
-        review_dict['rating'] = review.rating
-        review_dict['date'] = review.date.strftime('%Y-%m-%d %H:%M:%S')
-        review_list.append(review_dict)
-    return review_list
+    try:
+        reviews = Review.query.order_by(desc(Review.date)).limit(6).all()
+    except:
+        print("Database error")
+    else:
+        for review in reviews:
+            review_dict = {}
+            review_dict['id'] = review.id
+            review_dict['name'] = review.name
+            review_dict['country'] = review.country
+            review_dict['pos_text'] = review.pos_text
+            review_dict['rating'] = review.rating
+            review_dict['date'] = review.date.strftime('%Y-%m-%d %H:%M:%S')
+            review_list.append(review_dict)
+        return review_list
 
 
 @application.route('/')
