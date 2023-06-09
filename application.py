@@ -5,14 +5,15 @@ from constants import *
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
+# set up flask
 application = Flask(__name__)
 
 # database PostgreSQL connect
 application.config["SQLALCHEMY_DATABASE_URI"] = KEYS_DB
+
 db = SQLAlchemy(application)
 
-
-# class DB
+# class DB review
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(300), nullable=False)
@@ -24,6 +25,14 @@ class Review(db.Model):
     def __repr__(self):
         return '<Review %r>' % self.id
 
+class Client(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)
+    registered_on = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<Client %r>' % self.email
 
 # create table
 with application.app_context():
@@ -74,7 +83,6 @@ def home():
         template_data[f'text{i + 1}'] = pos_text[i] if len(pos_text[i]) <50 else pos_text[i][:50]
 
     return render_template('index.html', **template_data)
-
 
 
 @application.route('/currency', methods=['GET', 'POST'])
@@ -177,5 +185,41 @@ def posts():
         return render_template('post.html', rating=RATING)
 
 
+@application.route('/login', methods=['GET', 'POST'])
+def login():
+    '''Login function'''
+    error = ''
+
+    if request.method == 'POST':
+        # get from page
+        login = request.form['uname']
+        password_input = request.form['psw']
+
+        # Query database request
+        user = Client.query.filter_by(email=login).first()
+
+        if user: # check login
+            hashed_password = user.password
+            if password_input == hashed_password: # check password
+                return redirect('/posts')
+            else:
+                return render_template('login.html', error_p="Invalid username or password")
+        else: return render_template('login.html', error_p="Invalid username or password")
+
+    else:
+        return render_template('login.html', error_p=error)
+
+@application.route('/register', methods=['POST'])
+def register():
+    """"""
+    email = request.form.get('email')
+    password = request.form.get('password')
+    if psw_validation(password):status = "Registered"
+    else:status = "Incorrect password [8-10 digits] [A-Z] [0-9]"
+
+    return render_template("post.html", status_registration = status, rating=RATING)
+
+
 if __name__ == '__main__':
-    application.run(port=5000, debug=True)
+    application.run(port=5001, debug=True)
+

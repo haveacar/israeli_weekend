@@ -136,3 +136,22 @@ class Carbon:
         else:
             res = response.json()
             return res
+
+def psw_validation(psw:str)->bool:
+    """
+    Func check password validation
+    :param psw: str
+    :return: Bool
+    """
+    #  length case
+    if len(psw) < 8 or len(psw)>10: return False
+    # digital case
+    if not any(char.isdigit() for char in psw): return False
+    # char case
+    if not any(char.isalpha() for char in psw): return False
+    # lower case
+    if not any(char.islower() for char in psw): return False
+    # upper case
+    if not any(char.isupper() for char in psw): return False
+
+    return True
