@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+{% block title %}
+    Post
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h4 class="h4">{{ title }}</h4><br>
+        <hr>
+        <img src="{{ url_for('static', filename='image.jpg') }}" alt="Image">
+        <p class="fa-paragraph"> {{ text_field }}</p>
+    </div>
+
+{% endblock %}
