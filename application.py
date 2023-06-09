@@ -44,18 +44,22 @@ fly_green = Carbon()
 
 def get_reviews() -> list:
     """Func to get data from Database"""
-    reviews = Review.query.order_by(desc(Review.date)).limit(6).all()
     review_list = []
-    for review in reviews:
-        review_dict = {}
-        review_dict['id'] = review.id
-        review_dict['name'] = review.name
-        review_dict['country'] = review.country
-        review_dict['pos_text'] = review.pos_text
-        review_dict['rating'] = review.rating
-        review_dict['date'] = review.date.strftime('%Y-%m-%d %H:%M:%S')
-        review_list.append(review_dict)
-    return review_list
+    try:
+        reviews = Review.query.order_by(desc(Review.date)).limit(6).all()
+    except:
+        print("Database error")
+    else:
+        for review in reviews:
+            review_dict = {}
+            review_dict['id'] = review.id
+            review_dict['name'] = review.name
+            review_dict['country'] = review.country
+            review_dict['pos_text'] = review.pos_text
+            review_dict['rating'] = review.rating
+            review_dict['date'] = review.date.strftime('%Y-%m-%d %H:%M:%S')
+            review_list.append(review_dict)
+        return review_list
 
 
 @application.route('/')
@@ -225,6 +229,15 @@ def register():
 
     return render_template("post.html", status_registration = status, rating=RATING)
 
+@application.route('/handle_button', methods=['POST'])
+def handle_button():
+    """func return html page for choice card"""
+    card = int(request.form.get('card'))
+    # get data from database
+    reviews_data = get_reviews()
+    choice= reviews_data[card-1]
+
+    return render_template('full_post.html', title= choice['name'], country= choice['country'], text_field=choice['pos_text'], stars = STAR * choice['rating'])
 
 if __name__ == '__main__':
     application.run(port=5001, debug=True)
