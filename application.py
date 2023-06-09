@@ -214,7 +214,13 @@ def register():
     """"""
     email = request.form.get('email')
     password = request.form.get('password')
-    if psw_validation(password):status = "Registered"
+    if psw_validation(password):
+        status = "Registered"
+        # add new user
+        new_user = Client(email=email, password=password, registered_on=datetime.utcnow())
+        db.session.add(new_user)
+        db.session.commit()
+
     else:status = "Incorrect password [8-10 digits] [A-Z] [0-9]"
 
     return render_template("post.html", status_registration = status, rating=RATING)
