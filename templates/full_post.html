@@ -6,7 +6,8 @@
 {% block body %}
     <div class="container">
         <br>
-        <h4 class="h4">{{ title }}</h4><br>
+        <h4 class="h4">{{ title }}</h4>
+        <small class="text-body-secondary">{{ stars }}</small>
         <h4 class="h4">{{ country }}</h4><br>
             <hr>
         <img src="{{ url_for('static', filename='image.jpg') }}" alt="Image">

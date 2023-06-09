@@ -237,7 +237,7 @@ def handle_button():
     reviews_data = get_reviews()
     choice= reviews_data[card-1]
 
-    return render_template('full_post.html', title= choice['name'], country= choice['country'], text_field=choice['pos_text'])
+    return render_template('full_post.html', title= choice['name'], country= choice['country'], text_field=choice['pos_text'], stars = STAR * choice['rating'])
 
 if __name__ == '__main__':
     application.run(port=5001, debug=True)
