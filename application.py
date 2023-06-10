@@ -1,10 +1,11 @@
+import os
 from flask import Flask, render_template, request, redirect
 from sqlalchemy import desc
 from controls import *
 from constants import *
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
+from werkzeug.utils import secure_filename
 # set up flask
 application = Flask(__name__)
 
@@ -12,6 +13,10 @@ application = Flask(__name__)
 application.config["SQLALCHEMY_DATABASE_URI"] = KEYS_DB
 
 db = SQLAlchemy(application)
+
+STATIC_PATH = os.path.join(os.path.dirname(__file__), 'static')
+# specify the directory where you want to save uploaded files
+application.config['UPLOAD_FOLDER'] = os.path.join(STATIC_PATH, 'images_post')
 
 # class DB review
 class Review(db.Model):
@@ -172,16 +177,27 @@ def airlines():
 def posts():
     """Posts page"""
     if request.method == "POST":
+
         title = request.form["title"].capitalize()
         country = request.form["country"].capitalize()
         text_positive = request.form["positive"].capitalize()
         rating = int(request.form["rating"])
+
+        if 'file' in  request.files:
+            file = request.files['file']
+            if file.filename != '':
+                # Ensure the filename is safe to use
+                filename = secure_filename(file.filename)
+                resized_img = resize_image(file)
+                resized_img.save(os.path.join(application.config['UPLOAD_FOLDER'], filename))
+
         # create an instance of the class database
         review = Review(name=title, country=country, pos_text=text_positive, rating=rating)
         try:
             #write to database
-            db.session.add(review)
-            db.session.commit()
+            with db.session.begin():
+                db.session.add(review)
+
             return redirect('/')
         except:
             return render_template('post.html', rating=RATING, error_db="Oops(: Something Wrong!")
@@ -222,8 +238,8 @@ def register():
         status = "Registered"
         # add new user
         new_user = Client(email=email, password=password, registered_on=datetime.utcnow())
-        db.session.add(new_user)
-        db.session.commit()
+        with db.session.begin():
+            db.session.add(new_user)
 
     else:status = "Incorrect password [8-10 digits] [A-Z] [0-9]"
 

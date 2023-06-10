@@ -9,11 +9,11 @@
         <h3>Add Review</h3>
         <h4>{{ error_db }}</h4>
         <div>
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <input type="text" name="title" id="title" class="form-control" placeholder="Place name" required><br>
                 <input type="text" name="country" id="country" class="form-control" placeholder="Country" required><br>
                 <textarea type="text" name="positive" id="positive" class="form-control" placeholder="Positive Review" required></textarea><br>
-                <input type="file" name="file" id="file" class="form-control" placeholder="Image" accept="image/jpeg, image/png"><br>
+                <input type="file" name="file" id="file" class="form-control" placeholder="Image" accept="image/jpeg, image/png, image/jpg"><br>
                 <label for="rating">Rating:</label>
                 <select name="rating" id="rating">
                     {% for r in rating %}

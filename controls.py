@@ -3,6 +3,7 @@ import os
 import requests as requests
 from flask import json
 from keys_api import *
+from PIL import Image
 
 # path
 CURRENT_PATH = os.path.dirname(__file__)
@@ -155,3 +156,12 @@ def psw_validation(psw:str)->bool:
     if not any(char.isupper() for char in psw): return False
 
     return True
+
+
+
+def resize_image(img):
+    """Func to resize image"""
+    # Calculate width based on the desired height keeping aspect ratio
+    width = int((225 / img.height) * img.width)
+    resized_img = img.resize((width, 225))
+    return resized_img
