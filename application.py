@@ -73,29 +73,13 @@ def get_reviews() -> list:
 @application.route('/home')
 def home():
     """index page"""
-    # get data from database
-    reviews_data = get_reviews()
-    # create rating list comprehension
-    star_list = [STAR * review['rating'] for review in reviews_data]
-    # create names list comprehension
-    names_list = [(review['name'] + "-" + review['country']) for review in reviews_data]
-    # create positive text
-    pos_text = [review['pos_text'] for review in reviews_data]
-    # create image names list
-    img_name = [review['img_name'] for review in reviews_data]
-
-    path= os.path.join(application.config['UPLOAD_FOLDER'], img_name[0])
     # generate dates for search
     departure_date, return_date = get_dates()
     template_data = {
         'data_departure': departure_date,
         'data_return': return_date,
     }
-    for i in range(len(reviews_data)):
-        template_data[f'stars{i + 1}'] = star_list[i]
-        template_data[f'thumbnail{i + 1}'] = names_list[i]
-        template_data[f'text{i + 1}'] = pos_text[i] if len(pos_text[i]) <50 else pos_text[i][:50]
-        template_data[f'image{i + 1}'] = os.path.join('/static/images_post', img_name[i])
+
 
     return render_template('index.html', **template_data)
 
@@ -251,16 +235,8 @@ def register():
 
     return render_template("post.html", status_registration = status, rating=RATING)
 
-@application.route('/handle_button', methods=['POST'])
-def handle_button():
-    """func return html page for choice card"""
-    card = int(request.form.get('card'))
-    # get data from database
-    reviews_data = get_reviews()
-    choice= reviews_data[card-1]
 
-    return render_template('full_post.html', title= choice['name'], country= choice['country'], text_field=choice['pos_text'], stars = STAR * choice['rating'], image_main=os.path.join('/static/images_post', choice['img_name']))
 
 if __name__ == '__main__':
-    application.run(port=5000, debug=True)
+    application.run(port=5001, debug=True)
 

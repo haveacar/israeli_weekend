@@ -3,7 +3,7 @@ import os
 import requests as requests
 from flask import json
 from keys_api import *
-from PIL import Image
+
 
 # path
 CURRENT_PATH = os.path.dirname(__file__)
