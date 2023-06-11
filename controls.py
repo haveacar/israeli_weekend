@@ -157,11 +157,3 @@ def psw_validation(psw:str)->bool:
 
     return True
 
-
-
-def resize_image(img):
-    """Func to resize image"""
-    # Calculate width based on the desired height keeping aspect ratio
-    width = int((225 / img.height) * img.width)
-    resized_img = img.resize((width, 225))
-    return resized_img

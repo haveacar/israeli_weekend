@@ -25,6 +25,7 @@ class Review(db.Model):
     country = db.Column(db.String(300), nullable=False)
     pos_text = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
+    img_name = db.Column(db.String(300), nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow())
 
     def __repr__(self):
@@ -63,6 +64,7 @@ def get_reviews() -> list:
             review_dict['pos_text'] = review.pos_text
             review_dict['rating'] = review.rating
             review_dict['date'] = review.date.strftime('%Y-%m-%d %H:%M:%S')
+            review_dict['img_name'] = review.img_name
             review_list.append(review_dict)
         return review_list
 
@@ -79,7 +81,10 @@ def home():
     names_list = [(review['name'] + "-" + review['country']) for review in reviews_data]
     # create positive text
     pos_text = [review['pos_text'] for review in reviews_data]
+    # create image names list
+    img_name = [review['img_name'] for review in reviews_data]
 
+    path= os.path.join(application.config['UPLOAD_FOLDER'], img_name[0])
     # generate dates for search
     departure_date, return_date = get_dates()
     template_data = {
@@ -90,6 +95,7 @@ def home():
         template_data[f'stars{i + 1}'] = star_list[i]
         template_data[f'thumbnail{i + 1}'] = names_list[i]
         template_data[f'text{i + 1}'] = pos_text[i] if len(pos_text[i]) <50 else pos_text[i][:50]
+        template_data[f'image{i + 1}'] = os.path.join('/static/images_post', img_name[i])
 
     return render_template('index.html', **template_data)
 
@@ -188,19 +194,19 @@ def posts():
             if file.filename != '':
                 # Ensure the filename is safe to use
                 filename = secure_filename(file.filename)
-                resized_img = resize_image(file)
-                resized_img.save(os.path.join(application.config['UPLOAD_FOLDER'], filename))
+                #resized_img = resize_image(file)
+                file.save(os.path.join(application.config['UPLOAD_FOLDER'], filename))
 
-        # create an instance of the class database
-        review = Review(name=title, country=country, pos_text=text_positive, rating=rating)
-        try:
-            #write to database
-            with db.session.begin():
-                db.session.add(review)
+                # create an instance of the class database
+                review = Review(name=title, country=country, pos_text=text_positive, rating=rating, img_name=filename)
+                try:
+                    #write to database
+                    with db.session.begin():
+                        db.session.add(review)
 
-            return redirect('/')
-        except:
-            return render_template('post.html', rating=RATING, error_db="Oops(: Something Wrong!")
+                    return redirect('/')
+                except:
+                    return render_template('post.html', rating=RATING, error_db="Oops(: Something Wrong!")
     else:
         return render_template('post.html', rating=RATING)
 
@@ -253,7 +259,7 @@ def handle_button():
     reviews_data = get_reviews()
     choice= reviews_data[card-1]
 
-    return render_template('full_post.html', title= choice['name'], country= choice['country'], text_field=choice['pos_text'], stars = STAR * choice['rating'])
+    return render_template('full_post.html', title= choice['name'], country= choice['country'], text_field=choice['pos_text'], stars = STAR * choice['rating'], image_main=os.path.join('/static/images_post', choice['img_name']))
 
 if __name__ == '__main__':
     application.run(port=5001, debug=True)
