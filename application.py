@@ -262,5 +262,5 @@ def handle_button():
     return render_template('full_post.html', title= choice['name'], country= choice['country'], text_field=choice['pos_text'], stars = STAR * choice['rating'], image_main=os.path.join('/static/images_post', choice['img_name']))
 
 if __name__ == '__main__':
-    application.run(port=5001, debug=True)
+    application.run(port=5000, debug=True)
 
