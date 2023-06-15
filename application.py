@@ -243,4 +243,4 @@ def register():
 
 
 if __name__ == '__main__':
-    application.run(port=5000, debug=True)
+    application.run(port=5000, debug=False)
