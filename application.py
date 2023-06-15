@@ -6,6 +6,7 @@ from constants import *
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.utils import secure_filename
+
 # set up flask
 application = Flask(__name__)
 
@@ -17,6 +18,7 @@ db = SQLAlchemy(application)
 STATIC_PATH = os.path.join(os.path.dirname(__file__), 'static')
 # specify the directory where you want to save uploaded files
 application.config['UPLOAD_FOLDER'] = os.path.join(STATIC_PATH, 'images_post')
+
 
 # class DB review
 class Review(db.Model):
@@ -31,6 +33,7 @@ class Review(db.Model):
     def __repr__(self):
         return '<Review %r>' % self.id
 
+
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -39,6 +42,7 @@ class Client(db.Model):
 
     def __repr__(self):
         return '<Client %r>' % self.email
+
 
 # create table
 with application.app_context():
@@ -79,7 +83,6 @@ def home():
         'data_departure': departure_date,
         'data_return': return_date,
     }
-
 
     return render_template('index.html', **template_data)
 
@@ -173,18 +176,18 @@ def posts():
         text_positive = request.form["positive"].capitalize()
         rating = int(request.form["rating"])
 
-        if 'file' in  request.files:
+        if 'file' in request.files:
             file = request.files['file']
             if file.filename != '':
                 # Ensure the filename is safe to use
                 filename = secure_filename(file.filename)
-                #resized_img = resize_image(file)
+                # resized_img = resize_image(file)
                 file.save(os.path.join(application.config['UPLOAD_FOLDER'], filename))
 
                 # create an instance of the class database
                 review = Review(name=title, country=country, pos_text=text_positive, rating=rating, img_name=filename)
                 try:
-                    #write to database
+                    # write to database
                     with db.session.begin():
                         db.session.add(review)
 
@@ -208,16 +211,18 @@ def login():
         # Query database request
         user = Client.query.filter_by(email=login).first()
 
-        if user: # check login
+        if user:  # check login
             hashed_password = user.password
-            if password_input == hashed_password: # check password
+            if password_input == hashed_password:  # check password
                 return redirect('/posts')
             else:
                 return render_template('login.html', error_p="Invalid username or password")
-        else: return render_template('login.html', error_p="Invalid username or password")
+        else:
+            return render_template('login.html', error_p="Invalid username or password")
 
     else:
         return render_template('login.html', error_p=error)
+
 
 @application.route('/register', methods=['POST'])
 def register():
@@ -231,12 +236,11 @@ def register():
         with db.session.begin():
             db.session.add(new_user)
 
-    else:status = "Incorrect password [8-10 digits] [A-Z] [0-9]"
+    else:
+        status = "Incorrect password [8-10 digits] [A-Z] [0-9]"
 
-    return render_template("post.html", status_registration = status, rating=RATING)
-
+    return render_template("post.html", status_registration=status, rating=RATING)
 
 
 if __name__ == '__main__':
-    application.run(port=5001, debug=True)
-
+    application.run(port=5000, debug=True)

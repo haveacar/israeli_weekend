@@ -3149,6 +3149,12 @@ textarea.form-control-lg {
         margin: 4px 2px;
         cursor: pointer;
 }
+
+.two-column-list {
+      column-count: 2;
+      list-style-type: none;
+    }
+
 .btn {
     --bs-btn-padding-x: 0.75rem;
     --bs-btn-padding-y: 0.375rem;
