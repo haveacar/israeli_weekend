@@ -10,7 +10,7 @@
     <div style="max-width:20%; display:block; margin: auto;">
         <img class="img-fluid" src="{{ url_for('static', filename='img/money-exchange.png') }}" alt="..."/>
     </div>
-    <form method="post">
+    <form method="post" id="currency">
         <input type="number" name="amount" placeholder="Enter amount" required min="1">
         <br><br>
         <label for="from_currency">From Currency:</label>

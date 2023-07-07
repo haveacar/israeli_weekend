@@ -1,4 +1,3 @@
-import os
 from flask import Flask, render_template, request, redirect
 from sqlalchemy import desc
 from controls import *
@@ -6,12 +5,15 @@ from constants import *
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.utils import secure_filename
+import os
 
 # set up flask
 application = Flask(__name__)
+# database Path
+DB_PATH = os.path.join(os.path.dirname(__file__), 'travel_test.db')
 
-# database PostgreSQL connect
-application.config["SQLALCHEMY_DATABASE_URI"] = KEYS_DB
+# database connect
+application.config["SQLALCHEMY_DATABASE_URI"] = f'sqlite:////{DB_PATH}'
 
 db = SQLAlchemy(application)
 
@@ -201,46 +203,8 @@ def posts():
 @application.route('/login', methods=['GET', 'POST'])
 def login():
     '''Login function'''
-    error = ''
-
-    if request.method == 'POST':
-        # get from page
-        login = request.form['uname']
-        password_input = request.form['psw']
-
-        # Query database request
-        user = Client.query.filter_by(email=login).first()
-
-        if user:  # check login
-            hashed_password = user.password
-            if password_input == hashed_password:  # check password
-                return redirect('/posts')
-            else:
-                return render_template('login.html', error_p="Invalid username or password")
-        else:
-            return render_template('login.html', error_p="Invalid username or password")
-
-    else:
-        return render_template('login.html', error_p=error)
-
-
-@application.route('/register', methods=['POST'])
-def register():
-    """"""
-    email = request.form.get('email')
-    password = request.form.get('password')
-    if psw_validation(password):
-        status = "Registered"
-        # add new user
-        new_user = Client(email=email, password=password, registered_on=datetime.utcnow())
-        with db.session.begin():
-            db.session.add(new_user)
-
-    else:
-        status = "Incorrect password [8-10 digits] [A-Z] [0-9]"
-
-    return render_template("post.html", status_registration=status, rating=RATING)
+    return "Login"
 
 
 if __name__ == '__main__':
-    application.run(port=5000, debug=False)
+    application.run(port=5002, debug=False)

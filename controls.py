@@ -2,13 +2,25 @@ import datetime
 import os
 import requests as requests
 from flask import json
-from keys_api import *
+#from keys_api import *
+from dotenv import load_dotenv
+
+# load all environment variables
+load_dotenv()
+
+API_KEY_CUR = os.getenv("API_KEY_CUR")
+REQUEST_URL = os.getenv("REQUEST_URL")
+KIWI_ENDPOINT = os.getenv("KIWI_ENDPOINT")
+HEADER_APIKEY = os.getenv("HEADER_APIKEY")
+CARBON_URL = os.getenv("CARBON_URL")
+API_KEY_CARBON = os.getenv("API_KEY_CARBON")
+KEYS_DB = os.getenv("KEYS_DB")
 
 
 # path
 CURRENT_PATH = os.path.dirname(__file__)
 CURRENT_PATCH_JASON = os.path.join(CURRENT_PATH, "static")
-
+# days period
 DAYS = 20
 
 def get_dates() -> tuple:
@@ -73,7 +85,7 @@ class Carbon:
             "term": city.lower()
         }
         try:
-            response = requests.get(url=KIWI_ENDPOINT, headers=HEADER, params=params, timeout=5)
+            response = requests.get(url=KIWI_ENDPOINT, headers=HEADER_APIKEY, params=params, timeout=5)
 
         except requests.exceptions.Timeout:
             print("Connection timed out")
