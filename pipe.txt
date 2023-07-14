@@ -1,0 +1,8 @@
+# create admin+
+# create database+
+# create supeuser
+# create password
+
+
+
+
