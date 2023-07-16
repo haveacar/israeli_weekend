@@ -3241,7 +3241,14 @@ textarea.form-control-lg {
     opacity: var(--bs-btn-disabled-opacity);
 }
 
-
+.center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 20vh;
+    width:90vh ;
+}
 .btn-primary {
     --bs-btn-color: #fff;
     --bs-btn-bg: #0d6efd;

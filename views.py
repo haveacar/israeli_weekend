@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, url_for
 from controls import get_dates, receive_data, Carbon
 from constants import CURRENCY_NAMES
 
@@ -100,7 +100,7 @@ def init(application):
         return render_template('airlines.html')
 
 
-    @application.route('/login', methods=['GET', 'POST'])
+    @application.route('/login/')
     def login():
         '''Login function'''
-        return "Login"
+        return 'hi'

@@ -6,7 +6,6 @@ from controls import *
 import os
 from models import db, Users
 
-
 # set up flask
 application = Flask(__name__)
 # database Path
@@ -34,4 +33,4 @@ with application.app_context():
 
 
 if __name__ == '__main__':
-    application.run(port=5000, debug=False)
+    application.run(port=5000, debug=True)
