@@ -4,7 +4,7 @@ from flask_admin.contrib.sqla import ModelView
 import views
 from controls import *
 import os
-from models import db, Users
+from models import db, Users, Review
 
 # set up flask
 application = Flask(__name__)
@@ -23,6 +23,7 @@ db.init_app(application)
 
 admin = Admin(application, name='My App Admin', template_mode='bootstrap3')
 admin.add_view(ModelView(Users, db.session))
+admin.add_view(ModelView(Review, db.session))
 
 # initialization views
 views.init(application)

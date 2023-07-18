@@ -1,7 +1,7 @@
-from flask import render_template, request, url_for
+from flask import render_template, request, url_for, redirect
 from controls import get_dates, receive_data, Carbon, get_reviews
 from constants import CURRENCY_NAMES
-
+from models import Review, db
 
 # emission calculate
 fly_green = Carbon()
@@ -93,6 +93,25 @@ def init(application):
     def about():
         """About page"""
         return render_template('about.html')
+
+    @application.route('/add_review', methods=['POST'])
+    def add_review():
+        # Extract data from form
+        title = request.form.get('title')
+        stars = request.form.get('stars')
+        text = request.form.get('text')
+
+        # Create new Review object
+        new_review = Review(title=title, stars=int(stars), text=text)
+
+        # Add new Review to the session
+        db.session.add(new_review)
+
+        # Commit the session to save the changes
+        db.session.commit()
+
+        # Redirect to the reviews page
+        return redirect('/')
 
 
     @application.route('/airlines')

@@ -3,7 +3,7 @@ import os
 import requests as requests
 from flask import json
 from keys_api import *
-
+from models import Review
 # path
 CURRENT_PATH = os.path.dirname(__file__)
 CURRENT_PATCH_JASON = os.path.join(CURRENT_PATH, "static")
@@ -157,9 +157,7 @@ def psw_validation(psw:str)->bool:
 
 def get_reviews():
     """Fetch and return the reviews."""
-    reviews = [
-        {'title': 'Review 1', 'author':'name','stars': 4, 'text': 'This is a review text. The service was great.'},
-        {'title': 'Review 10', 'author':'name','stars': 2, 'text': 'This is a review text. The service could be improved.'},
+    reviews = Review.query.order_by(Review.id.desc()).limit(10).all()
 
-    ]
+    reviews = [{'title': review.title, 'stars': review.stars, 'text': review.text} for review in reviews]
     return reviews

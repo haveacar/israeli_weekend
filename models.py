@@ -16,3 +16,17 @@ class Users(db.Model):
     def __repr__(self):
         return '<Client %r>' % self.email
 
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(80), nullable=False)
+    stars = db.Column(db.Integer, nullable=False)
+    text = db.Column(db.Text, nullable=False)
+    registered_on = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __init__(self,title, stars, text):
+        self.title = title
+        self.stars = stars
+        self.text = text
+
+    def __repr__(self):
+        return '<Review %r>' % self.title

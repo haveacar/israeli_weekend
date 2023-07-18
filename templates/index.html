@@ -80,28 +80,45 @@
         </script>
     </div>
     <br>
-    <section>
-        <div class="container py-5">
-            <h1 class="text-center">Reviews</h1>
-            <ul class="list-unstyled">
-                {% for review in reviews %}
-                <li class="media my-4">
-                    <div class="media-body">
-                        <h5 class="mt-0 mb-1">{{ review.title }} <br>{{ review.author }}
-                        <span class="text-warning">
-                                <p>{{ review.stars * "★"}}</p>
-                        </span>
-                        </h5>
-                        {{ review.text }}
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-    </section>
+    <section>
+    <div class="container py-5">
+        <h1 class="text-center">Add a Review</h1>
+        <form action="/add_review" method="post">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="stars">Stars (1-5):</label>
+                <input type="number" class="form-control" id="stars" name="stars" min="1" max="5" required>
+            </div>
+            <div class="form-group">
+                <label for="text">Review:</label>
+                <textarea class="form-control" id="text" name="text" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <hr>
+        <h1 class="text-center">Reviews</h1>
+        <ul class="list-unstyled">
+            {% for review in reviews %}
+            <li class="media my-4">
+                <div class="media-body">
+                    <h5 class="mt-0 mb-1">{{ review.title }}
+                    <span class="text-warning">
+                            <p>{{ review.stars * "★"}}</p>
+                    </span>
+                    </h5>
+                    {{ review.text }}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</section>
     <div>
           <ul class="two-column-list">
             <li><a href="https://www.kiwi.com/deep?affilid=haveacarisraeltravelwidjetsearch&currency=ILS&departure=anytime&destination=prague_cz&origin=tel-aviv_il&return=anytime&returnFromDifferentAirport=false&returnToDifferentAirport=false&stopNumber=1&transport=aircraft">Flights to Prague</a></li>
