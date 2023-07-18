@@ -60,6 +60,7 @@
     <hr>
     <br><br>
     <!-- Booking widget-->
+    <h4>Hotel Booking</h4>
     <div class="booking-div">
         <ins class="bookingaff" data-aid="2342457" data-target_aid="2342457" data-prod="map" data-width="100%"
              data-height="590" data-lang="en" data-currency="ILS" data-dest_id="0" data-dest_type="landmark"
@@ -79,6 +80,28 @@
         </script>
     </div>
     <br>
+    <section>
+        <div class="container py-5">
+            <h1 class="text-center">Reviews</h1>
+            <ul class="list-unstyled">
+                {% for review in reviews %}
+                <li class="media my-4">
+                    <div class="media-body">
+                        <h5 class="mt-0 mb-1">{{ review.title }} <br>{{ review.author }}
+                        <span class="text-warning">
+                                <p>{{ review.stars * "★"}}</p>
+                        </span>
+                        </h5>
+                        {{ review.text }}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    </section>
     <div>
           <ul class="two-column-list">
             <li><a href="https://www.kiwi.com/deep?affilid=haveacarisraeltravelwidjetsearch&currency=ILS&departure=anytime&destination=prague_cz&origin=tel-aviv_il&return=anytime&returnFromDifferentAirport=false&returnToDifferentAirport=false&stopNumber=1&transport=aircraft">Flights to Prague</a></li>
@@ -90,7 +113,9 @@
             <li><a href="https://www.kiwi.com/deep?affilid=haveacarisraeltravelwidjetsearch&currency=ILS&departure=anytime&destination=venice_it&origin=tel-aviv_il&return=anytime&returnFromDifferentAirport=false&returnToDifferentAirport=false&stopNumber=1&transport=aircraft">Flights to Venice</a></li>
             <li><a href="https://www.kiwi.com/deep?affilid=haveacarisraeltravelwidjetsearch&currency=ILS&departure=anytime&destination=barcelona_es&origin=tel-aviv_il&return=anytime&returnFromDifferentAirport=false&returnToDifferentAirport=false&stopNumber=1&transport=aircraft">Flights to Barcelona</a></li>
           </ul>
+
     </div>
     <br>
+
 
 {% endblock %}

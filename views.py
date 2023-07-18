@@ -1,5 +1,5 @@
 from flask import render_template, request, url_for
-from controls import get_dates, receive_data, Carbon
+from controls import get_dates, receive_data, Carbon, get_reviews
 from constants import CURRENCY_NAMES
 
 
@@ -18,8 +18,9 @@ def init(application):
             'data_departure': departure_date,
             'data_return': return_date,
         }
+        reviews = get_reviews()
 
-        return render_template('index.html', **template_data)
+        return render_template('index.html',reviews=reviews,  **template_data)
 
 
     @application.route('/currency', methods=['GET', 'POST'])

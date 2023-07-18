@@ -155,3 +155,11 @@ def psw_validation(psw:str)->bool:
 
     return True
 
+def get_reviews():
+    """Fetch and return the reviews."""
+    reviews = [
+        {'title': 'Review 1', 'author':'name','stars': 4, 'text': 'This is a review text. The service was great.'},
+        {'title': 'Review 10', 'author':'name','stars': 2, 'text': 'This is a review text. The service could be improved.'},
+
+    ]
+    return reviews
