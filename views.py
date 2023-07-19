@@ -121,7 +121,3 @@ def init(application):
         return render_template('airlines.html')
 
 
-    @application.route('/login/')
-    def login():
-        '''Login function'''
-        return 'hi'
