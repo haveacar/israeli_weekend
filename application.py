@@ -25,6 +25,7 @@ admin = Admin(application, name='My Travel Admin', url="/myadminlink", template_
 admin.add_view(ModelView(Users, db.session))
 admin.add_view(ModelView(Review, db.session))
 
+
 # initialization views
 views.init(application)
 

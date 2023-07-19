@@ -3241,6 +3241,21 @@ textarea.form-control-lg {
     opacity: var(--bs-btn-disabled-opacity);
 }
 
+.button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 20px;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        background-color: rgba(13, 229, 13, 0.71);
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+        background-color: rgb(14, 115, 46);
+    }
 .center-content {
     display: flex;
     justify-content: center;

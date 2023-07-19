@@ -88,6 +88,10 @@ def init(application):
         """Contact Us page"""
         return render_template('contact.html')
 
+    @application.route('/admin_login')
+    def login():
+        return render_template('login.html')
+        #return redirect('/myadminlink')
 
     @application.route('/about')
     def about():
@@ -119,5 +123,4 @@ def init(application):
     def airlines():
         """Airlines page"""
         return render_template('airlines.html')
-
 
