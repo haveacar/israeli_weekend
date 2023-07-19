@@ -21,7 +21,7 @@ application.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 application.config["SQLALCHEMY_DATABASE_URI"] = f'sqlite:////{DB_PATH}'
 db.init_app(application)
 
-admin = Admin(application, name='My App Admin', template_mode='bootstrap3')
+admin = Admin(application, name='My Travel Admin', url="/myadminlink", template_mode='bootstrap3')
 admin.add_view(ModelView(Users, db.session))
 admin.add_view(ModelView(Review, db.session))
 
