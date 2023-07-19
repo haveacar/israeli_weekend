@@ -159,5 +159,5 @@ def get_reviews():
     """Fetch and return the reviews."""
     reviews = Review.query.order_by(Review.id.desc()).limit(10).all()
 
-    reviews = [{'title': review.title, 'stars': review.stars, 'text': review.text} for review in reviews]
+    reviews = [{'title': review.title, 'stars': review.stars, 'name':review.name, 'text': review.text} for review in reviews]
     return reviews

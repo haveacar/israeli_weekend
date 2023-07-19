@@ -97,12 +97,13 @@ def init(application):
     @application.route('/add_review', methods=['POST'])
     def add_review():
         # Extract data from form
+        name = request.form.get('name')
         title = request.form.get('title')
         stars = request.form.get('stars')
         text = request.form.get('text')
 
         # Create new Review object
-        new_review = Review(title=title, stars=int(stars), text=text)
+        new_review = Review(title=title, stars=int(stars), name=name, text=text)
 
         # Add new Review to the session
         db.session.add(new_review)
