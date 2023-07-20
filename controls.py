@@ -3,11 +3,11 @@ import os
 import requests as requests
 from flask import json
 from keys_api import *
-
+from models import Review
 # path
 CURRENT_PATH = os.path.dirname(__file__)
 CURRENT_PATCH_JASON = os.path.join(CURRENT_PATH, "static")
-
+# days period
 DAYS = 20
 
 def get_dates() -> tuple:
@@ -34,7 +34,6 @@ def get_dates() -> tuple:
     data_return = f"{sunday_return}_{sunday_return + datetime.timedelta(days=3)}"
 
     return data_departure, data_return
-
 
 
 def receive_data():
@@ -155,3 +154,10 @@ def psw_validation(psw:str)->bool:
     if not any(char.isupper() for char in psw): return False
 
     return True
+
+def get_reviews():
+    """Fetch and return the reviews."""
+    reviews = Review.query.order_by(Review.id.desc()).limit(10).all()
+
+    reviews = [{'title': review.title, 'stars': review.stars, 'name':review.name, 'text': review.text} for review in reviews]
+    return reviews

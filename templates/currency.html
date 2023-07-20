@@ -10,16 +10,17 @@
     <div style="max-width:20%; display:block; margin: auto;">
         <img class="img-fluid" src="{{ url_for('static', filename='img/money-exchange.png') }}" alt="..."/>
     </div>
-    <form method="post">
+    <form method="post" id="currency">
         <input type="number" name="amount" placeholder="Enter amount" required min="1">
         <br><br>
-        <label for="from_currency">From Currency:</label>
+        <label class="form-label" for="from_currency">From Currency:</label><br>
         <select name="from_currency" id="from_currency">
             {% for currency in currencies %}
                 <option value="{{ currency }}">{{ currency }}</option>
             {% endfor %}
-        </select>
-        <label for="to_currency">To Currency:</label>
+        </select><br><br>
+
+        <label class="form-label" for="to_currency">To Currency:</label><br>
         <select name="to_currency" id="to_currency">
             {% for currency in currencies %}
                 <option value="{{ currency }}">{{ currency }}</option>
@@ -31,8 +32,10 @@
     {% if converted_amount is not none %}
         <div style="text-align:center;">
             <H2 style="margin-top: 5px;">
-                Result: {{ amount }} {{ from_currency }} {{ converted_amount }} {{ to_currency }}</H2>
+                {{ amount }} {{ from_currency }} {{ converted_amount }} {{ to_currency }}</H2>
         </div>
+        <br><br>
+
     {% endif %}
 
 {% endblock %}

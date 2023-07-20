@@ -1,5 +1,3 @@
-RATING = (1,2,3,4,5)
-STAR = '⭐️️'
 
 CURRENCY_NAMES = (
     'AED - United Arab Emirates Dirham',
