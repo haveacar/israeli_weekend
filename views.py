@@ -1,7 +1,9 @@
 from flask import render_template, request, url_for, redirect
 from controls import get_dates, receive_data, Carbon, get_reviews
 from constants import CURRENCY_NAMES
-from models import Review, db
+from models import Review, db, Users
+from werkzeug.security import check_password_hash
+
 
 # emission calculate
 fly_green = Carbon()
@@ -88,10 +90,6 @@ def init(application):
         """Contact Us page"""
         return render_template('contact.html')
 
-    @application.route('/admin_login')
-    def login():
-        return render_template('login.html')
-        #return redirect('/myadminlink')
 
     @application.route('/about')
     def about():
@@ -123,4 +121,25 @@ def init(application):
     def airlines():
         """Airlines page"""
         return render_template('airlines.html')
+
+    @application.route('/admin_login')
+    def login():
+        """login page"""
+        return render_template('login.html')
+        # return redirect('/myadminlink')
+
+
+    @application.route('/submit-login', methods= (['POST']))
+    def login_check():
+        if request.method == "POST":
+            email = request.form['email']
+            password = request.form['password']
+
+            # check user in database
+            user = Users.query.filter_by(email=email).first()
+            if  user or check_password_hash(user.password, password): return redirect('/myadminlink')
+
+            else:
+                print("Not User")
+                return render_template('login.html')
 

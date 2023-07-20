@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from werkzeug.security import generate_password_hash
 
 db = SQLAlchemy()
 
@@ -11,7 +12,7 @@ class Users(db.Model):
 
     def __init__(self,email, password):
         self.email = email
-        self.password = password
+        self.password = generate_password_hash(password)
 
     def __repr__(self):
         return '<Client %r>' % self.email
