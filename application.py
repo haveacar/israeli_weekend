@@ -9,7 +9,7 @@ from models import db, Users, Review
 # set up flask
 application = Flask(__name__)
 # database Path
-DB_PATH = os.path.join(os.path.dirname(__file__), 'travel_test.db')
+
 
 STATIC_PATH = os.path.join(os.path.dirname(__file__), 'static')
 # specify the directory where you want to save uploaded files
@@ -18,7 +18,7 @@ application.config['SECRET_KEY'] = SECRET_KEY
 application.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
 # database PostgreSQL connect
-application.config["SQLALCHEMY_DATABASE_URI"] = f'sqlite:////{DB_PATH}'
+application.config["SQLALCHEMY_DATABASE_URI"] = KEYS_DB
 db.init_app(application)
 
 
