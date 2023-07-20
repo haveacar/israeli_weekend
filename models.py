@@ -12,7 +12,7 @@ class Users(db.Model):
 
     def __init__(self,email, password):
         self.email = email
-        self.password = generate_password_hash(password)
+        self.password = password
 
     def __repr__(self):
         return '<Client %r>' % self.email

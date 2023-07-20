@@ -22,7 +22,6 @@ application.config["SQLALCHEMY_DATABASE_URI"] = f'sqlite:////{DB_PATH}'
 db.init_app(application)
 
 
-
 class UserView(ModelView):
     """hide password"""
     column_formatters = {
